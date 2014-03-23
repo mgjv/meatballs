@@ -29,7 +29,7 @@ app.configure(function() {
 app.get('/', function(req, res){
   res.render('home.jade');
 });
-server.listen(appPort);
+server.listen(process.env.PORT || appPort);
 // app.listen(appPort);
 console.log("Server listening on port " + appPort);
 
