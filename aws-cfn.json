@@ -1,0 +1,81 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    
+    "Resources" : {
+        "Ec2Instance" : {
+          "Type" : "AWS::EC2::Instance",
+          "Properties" : {
+            "SecurityGroups" : [ "www" ],
+            "KeyName" : "pb-syd",
+            "ImageId" : "ami-e9e675d3",
+            "InstanceType"   : "t1.micro",
+            "UserData" : { "Fn::Base64" : { "Fn::Join" : ["",[
+                "#!/bin/bash -ex","\n",
+                "apt-get --yes --quiet update\n",
+                "apt-get --yes --quiet install python-setuptools\n",
+                "easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
+
+                "/usr/local/bin/cfn-init --region ", { "Ref" : "AWS::Region" },
+                "    -s ", { "Ref" : "AWS::StackName" }, " -r Ec2Instance\n",
+                "cfn-signal -e $? '", { "Ref" : "WaitForInstanceWaitHandle" }, "'\n"
+            ]]}}
+        },
+        "Metadata" : {
+            "AWS::CloudFormation::Init" : {
+                "config" : {
+                    "packages" : {
+                        "rubygems" : {
+                            "chef" : [],
+                            "ohai" : []
+                        },
+                        "apt" : {
+                            "git" : [],
+                            "puppet" : [],
+                            "puppet-common" : [],
+                            "rubygems" : []
+                        }
+                    }
+                }
+            }
+        }
+      },
+      "VpcIPAssoc" : {
+         "Type" : "AWS::EC2::EIPAssociation",
+         "Properties" : {
+             "InstanceId" : { "Ref" : "Ec2Instance" },
+             "AllocationId" : "eipalloc-cb5c49a9"
+         }
+      },
+      "WaitForInstanceWaitHandle" : {
+          "Type" : "AWS::CloudFormation::WaitConditionHandle",
+          "Properties" : {
+          }
+      },
+      "WaitForInstance" : {
+          "Type" : "AWS::CloudFormation::WaitCondition",
+          "DependsOn" : "Ec2Instance",
+          "Properties" : {
+            "Handle" : {"Ref" : "WaitForInstanceWaitHandle"},
+            "Timeout" : "600"
+          }
+      }
+    },
+    "Outputs" : {
+      "InstanceId" : {
+        "Description" : "InstanceId of the newly created EC2 instance",
+        "Value" : { "Ref" : "Ec2Instance" }
+      },
+      "AZ" : {
+        "Description" : "Availability Zone of the newly created EC2 instance",
+        "Value" : { "Fn::GetAtt" : [ "Ec2Instance", "AvailabilityZone" ] }
+      },
+      "PublicIP" : {
+        "Description" : "Public IP address of the newly created EC2 instance",
+        "Value" : { "Fn::GetAtt" : [ "Ec2Instance", "PublicIp" ] }
+      },
+      "PrivateIP" : {
+        "Description" : "Private IP address of the newly created EC2 instance",
+        "Value" : { "Fn::GetAtt" : [ "Ec2Instance", "PrivateIp" ] }
+      }
+   }
+}
