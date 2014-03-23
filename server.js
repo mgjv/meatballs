@@ -1,6 +1,6 @@
 //	Customization
 
-var appPort = 16558;
+var appPort = 8000;
 
 // Librairies
 
@@ -31,7 +31,7 @@ app.get('/', function(req, res){
 });
 server.listen(appPort);
 // app.listen(appPort);
-console.log("Server listening on port 16558");
+console.log("Server listening on port " + appPort);
 
 // Handle the socket.io connections
 
@@ -78,7 +78,11 @@ io.sockets.on('connection', function (socket) { // First connection
 });
 
 function reloadUsers() { // Send the count of the users to all
-	io.sockets.emit('nbUsers', {"nb": users});
+  if (users == 1) {
+	io.sockets.emit('nbUsers', {"nb": "is " + users});
+  } else {
+	io.sockets.emit('nbUsers', {"nb": "are " + users});
+  }
 }
 function pseudoSet(socket) { // Test if the user has a name
 	var test;
