@@ -3,11 +3,16 @@
   "node":"0.6.12",
   "author":"geekuillaume",
   "dependencies": {
-  	"socket.io": "*",
-  	"express": "*",
-  	"jade": "*"
-  	  },
+    "socket.io": "*",
+    "express": "*",
+    "jade": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "supertest": "*",
+    "socket.io-client": "*"
+  },
   "scripts": {
-  	"start": "node server.js"
+    "start": "node server.js"
   }
 }

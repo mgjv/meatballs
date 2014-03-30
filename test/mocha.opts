@@ -1,0 +1,3 @@
+--reporter tap
+--ui bdd
+--timeout 1000
