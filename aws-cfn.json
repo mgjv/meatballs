@@ -7,16 +7,20 @@
           "Properties" : {
             "SecurityGroups" : [ "www" ],
             "KeyName" : "pb-syd",
-            "ImageId" : "ami-e9e675d3",
+            "Tags" : [ { "Key" : "Name", "Value" : "meatballs" },
+                       { "Key" : "Environment", "Value" : "test" },
+                       { "Key" : "AdminGroup", "Value" : "admin" } ],
+            "ImageId" : "ami-97e675ad",
             "InstanceType"   : "t1.micro",
             "UserData" : { "Fn::Base64" : { "Fn::Join" : ["",[
                 "#!/bin/bash -ex","\n",
                 "apt-get --yes --quiet update\n",
                 "apt-get --yes --quiet install python-setuptools\n",
+                "apt-get --yes --quiet install git\n",
                 "easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
                 "git clone https://github.com/paulb67/meatballs.git\n",
                 "cd meatballs\n",
-                "bash meatballs/bootstrap.sh\n",
+                "bash bootstrap.sh\n",
                 "/usr/local/bin/cfn-init --region ", { "Ref" : "AWS::Region" },
                 "    -s ", { "Ref" : "AWS::StackName" }, " -r Ec2Instance\n",
                 "cfn-signal -e $? '", { "Ref" : "WaitForInstanceWaitHandle" }, "'\n"
@@ -26,15 +30,8 @@
             "AWS::CloudFormation::Init" : {
                 "config" : {
                     "packages" : {
-                        "rubygems" : {
-                            "chef" : [],
-                            "ohai" : []
-                        },
                         "apt" : {
-                            "git" : [],
-                            "puppet" : [],
-                            "puppet-common" : [],
-                            "rubygems" : []
+                            "git" : []
                         }
                     }
                 }
@@ -58,7 +55,7 @@
           "DependsOn" : "Ec2Instance",
           "Properties" : {
             "Handle" : {"Ref" : "WaitForInstanceWaitHandle"},
-            "Timeout" : "600"
+            "Timeout" : "300"
           }
       }
     },
