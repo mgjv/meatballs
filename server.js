@@ -1,6 +1,6 @@
 //	Customization
 
-var appPort = 8000;
+//var appPort = process.env.PORT || 8080;
 
 // Librairies
 
@@ -24,14 +24,21 @@ app.configure(function() {
 	app.use(express.static(__dirname + '/public'));
 });
 
+app.set('port', process.env.PORT || 8080);
+
+server.listen(app.get('port'), function () {
+    console.log("Server listening on port %d", // in %s mode",
+        app.get('port')
+        //,server.settings.env
+    );
+});
+io.set('log level', 1);
+
 // Render and send the main page
 
 app.get('/', function(req, res){
   res.render('home.jade');
 });
-server.listen(process.env.PORT || appPort);
-// app.listen(appPort);
-console.log("Server listening on port " + appPort);
 
 // Handle the socket.io connections
 
@@ -40,6 +47,12 @@ var users = 0; //count the users
 io.sockets.on('connection', function (socket) { // First connection
 	users += 1; // Add 1 to the count
 	reloadUsers(); // Send the count to all the users
+
+    // Test function that socket can send message to itself
+    socket.on('echo', function(msg) {
+        socket.emit('echo', msg);
+    });
+
 	socket.on('message', function (data) { // Broadcast the message to all
 		if(pseudoSet(socket))
 		{
@@ -48,6 +61,7 @@ io.sockets.on('connection', function (socket) { // First connection
 			console.log("user "+ transmit['pseudo'] +" said \""+data+"\"");
 		}
 	});
+
 	socket.on('setPseudo', function (data) { // Assign a name to the user
 		if (pseudoArray.indexOf(data) == -1) // Test if the name is already taken
 		{
@@ -62,6 +76,7 @@ io.sockets.on('connection', function (socket) { // First connection
 			socket.emit('pseudoStatus', 'error') // Send the error
 		}
 	});
+
 	socket.on('disconnect', function () { // Disconnection of the client
 		users -= 1;
 		reloadUsers();
@@ -100,3 +115,5 @@ function returnPseudo(socket) { // Return the name of the user
 	});
 	return pseudo;
 }
+exports.server = server;
+exports.app = app;
