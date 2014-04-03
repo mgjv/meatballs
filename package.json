@@ -8,6 +8,7 @@
     "jade": "*"
   },
   "devDependencies": {
+    "mocha": "*",
     "chai": "*",
     "supertest": "*",
     "socket.io-client": "*"
