@@ -20,7 +20,8 @@
                 "easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
                 "cd /home/ubuntu\n",
                 "git clone https://github.com/paulb67/meatballs.git\n",
-                "bash meatballs/bootstrap.sh\n",
+                "cd meatballs\n",
+                "bash bootstrap.sh\n",
                 "/usr/local/bin/cfn-init --region ", { "Ref" : "AWS::Region" },
                 "    -s ", { "Ref" : "AWS::StackName" }, " -r Ec2Instance\n",
                 "cfn-signal -e $? '", { "Ref" : "WaitForInstanceWaitHandle" }, "'\n"
