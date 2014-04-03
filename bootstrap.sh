@@ -7,5 +7,7 @@ nvm install v0.10.17
 nvm use v0.10.17
 
 npm install -g forever
+npm install -g mocha    
+npm install -g istanbul
 npm install
 PORT=8080 forever start server.js
