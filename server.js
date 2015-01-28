@@ -15,9 +15,7 @@ var pseudoArray = ['admin']; //block the admin username (you can disable it)
 app.set('view engine', 'jade');
 app.set("view options", { layout: false })
 
-app.configure(function() {
-    app.use(express.static(__dirname + '/public'));
-});
+app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || defaultPort);
 
@@ -55,11 +53,10 @@ io.sockets.on('connection', function (socket) { // First connection
 
     socket.on('setPseudo', function (data) { // Assign a name to the user
         if (pseudoArray.indexOf(data) == -1) { // Test if the name is already taken
-            socket.set('pseudo', data, function(){
-                pseudoArray.push(data);
-                socket.emit('pseudoStatus', 'ok');
-                console.log("user " + data + " connected");
-            });
+            socket.pseudo = data;
+            pseudoArray.push(data);
+            socket.emit('pseudoStatus', 'ok');
+            console.log("user " + data + " connected");
         } else {
             socket.emit('pseudoStatus', 'error') // Send the error
         }
@@ -68,13 +65,11 @@ io.sockets.on('connection', function (socket) { // First connection
     socket.on('disconnect', function () { // Disconnection of the client
         users -= 1;
         reloadUsers();
-        if (returnPseudo(socket)) {
-            var pseudo;
-            socket.get('pseudo', function(err, name) {
-                pseudo = name;
-            });
+        var pseudo = returnPseudo(socket);
+        if (pseudo) {
             var index = pseudoArray.indexOf(pseudo);
-            pseudo.slice(index - 1, 1);
+            pseudoArray = pseudoArray.slice(index, index+1);
+            console.log("user " + pseudo + " disconnected");
         }
     });
 });
@@ -87,12 +82,7 @@ function reloadUsers() { // Send the count of the users to all
     }
 }
 function returnPseudo(socket) { // Return the name of the user
-    var pseudo;
-    socket.get('pseudo', function(err, name) {
-        if (name == null ) pseudo = false;
-        else pseudo = name;
-    });
-    return pseudo;
+    return socket.pseudo;
 }
 exports.server = server;
 exports.app = app;
