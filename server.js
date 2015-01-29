@@ -31,15 +31,28 @@ app.get('/', function(req, res){
 
 // Handle the socket.io connections
 var users = 0; //count the users
+var userno = 0; //for generating usernames
 
 io.sockets.on('connection', function (socket) { // First connection
     users += 1;
+    userno += 1;
     reloadUsers(); // Send the count to all the users
 
     // Test that socket can send message to itself
     socket.on('echo', function(msg) {
         socket.emit('echo', msg);
     });
+
+    // Assign a name to the user
+    var pseudo = 'User #' + userno;
+    if (pseudoArray.indexOf(pseudo) == -1) { // Test if the name is already taken
+        socket.pseudo = pseudo;
+        pseudoArray.push(pseudo);
+        socket.emit('pseudoStatus', {'status': 'ok', 'pseudo': pseudo});
+        console.log("user " + pseudo + " connected");
+    } else {
+        socket.emit('pseudoStatus', {'status': 'error'}) // Send the error
+    }
 
     // Broadcast message to all
     socket.on('message', function (data) {
@@ -48,17 +61,6 @@ io.sockets.on('connection', function (socket) { // First connection
             var transmit = {date : new Date().toISOString(), pseudo : name, message : data};
             socket.broadcast.emit('message', transmit);
             console.log("user "+ transmit['pseudo'] +" said \""+data+"\"");
-        }
-    });
-
-    socket.on('setPseudo', function (data) { // Assign a name to the user
-        if (pseudoArray.indexOf(data) == -1) { // Test if the name is already taken
-            socket.pseudo = data;
-            pseudoArray.push(data);
-            socket.emit('pseudoStatus', 'ok');
-            console.log("user " + data + " connected");
-        } else {
-            socket.emit('pseudoStatus', 'error') // Send the error
         }
     });
 
