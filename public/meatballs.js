@@ -1,18 +1,26 @@
 var messageContainer, submitButton;
 var pseudo = "";
 
+// document.ontouchmove = function(event){
+//     event.preventDefault();
+// }
+
 // Init
 $(function() {
     messageContainer = $('#messageInput');
     submitButton = $("#submit");
     bindButton();
     window.setInterval(time, 1000*10);
+
+    // Calculate size of chat entry window (removing top and bottom bars)
+    var chatEntriesHeight = $(window).height() - 30;
+
     $("#alertPseudo").hide();
     $('#modalPseudo').modal('show');
     $("#pseudoSubmit").click(function() {setPseudo()});
-    $("#chatEntries").slimScroll({height: '600px'});
+    $("#chatEntries").slimScroll({height: chatEntriesHeight});
     submitButton.click(function() {sentMessage();});
-    setHeight();
+    setHeight(chatEntriesHeight);
 
     $("input").bind("keydown", function(event) {
         // track enter key
@@ -33,7 +41,7 @@ socket.on('connect', function() {
     console.log('connected');
 });
 socket.on('nbUsers', function(msg) {
-    $("#nbUsers").html(msg.nb);
+    $("#nbUsers").html(msg.count);
 });
 socket.on('message', function(data) {
     addMessage(data['message'], data['pseudo'], new Date().toISOString(), false);
@@ -62,6 +70,7 @@ function addMessage(msg, pseudo, date, self) {
     else var classDiv = "row message";
     $("#chatEntries").append('<div class="'+classDiv+'"><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
     var elem = document.getElementById('chatEntries');
+    $('input#messageInput').blur();
     elem.scrollTop = elem.scrollHeight;
     time();
 }
@@ -96,7 +105,8 @@ function time() {
         $(this).text($.timeago($(this).attr('title')));
     });
 }
-function setHeight() {
-    $(".slimScrollDiv").height('603');
-    $(".slimScrollDiv").css('overflow', 'visible')
+function setHeight(chatEntriesHeight) {
+    $(".slimScrollDiv").height(chatEntriesHeight);
+    $(".slimScrollDiv").css({'overflow': 'visible'})
+    $(".slimScrollDiv #chatEntries").css({'paddingTop': 50,'paddingBottom': 50});
 }

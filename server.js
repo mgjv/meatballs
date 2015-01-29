@@ -76,9 +76,9 @@ io.sockets.on('connection', function (socket) { // First connection
 
 function reloadUsers() { // Send the count of the users to all
     if (users == 1) {
-        io.sockets.emit('nbUsers', {"nb": "is " + users});
+        io.sockets.emit('nbUsers', {"nb": "is " + users, count: users});
     } else {
-        io.sockets.emit('nbUsers', {"nb": "are " + users});
+        io.sockets.emit('nbUsers', {"nb": "are " + users, count: users});
     }
 }
 function returnPseudo(socket) { // Return the name of the user

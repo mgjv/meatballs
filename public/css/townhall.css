@@ -1,0 +1,167 @@
+@media (max-width: 1600px) {
+
+	body {
+	  height: 100%;
+	  width: 100%;
+	  overflow: auto;
+	}
+
+	/*font-size: 56px;*/
+	h3 {
+		font-size: 2rem;
+	}
+
+	.modal {
+		width:100%;
+		left:0;
+		margin:0;
+		top:0;
+		height:auto;
+		border-radius:0;
+		padding: 1rem 0;
+	}
+
+	.modal.fade.in {
+		top:20%;
+	}
+
+	.modal p {
+		font-size:1rem;
+	}
+
+	.modal-body, .modal-header, .modal-footer {
+		padding-left:10%;
+	}
+
+	.modal-backdrop {
+		background-color: #033241;
+	}
+
+	.modal-footer {
+		border:none;
+		text-align: left;
+	}
+
+	.navbar span.logo {
+		width: 75px;
+		height: 21px;
+		display: block;
+		background: url(http://smb.optus.com.au/opfiles/v11364/ys/online-style/images/logo/logo_optus.png) 0 0 no-repeat;
+		background-size: 75px 21px;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+	}
+
+	.navbar .brand {
+		margin-left:-10px;
+	}
+
+	.navbar {
+		z-index: 10000;
+	}
+
+	.navbar .userCount {
+		background: #00A3AD;
+		border-radius: 1rem;
+		width:auto;
+		padding:.1rem .5rem;
+		color: #fff;
+		top: 9px;
+		position: absolute;
+	}
+
+	.navbar .userCount #nbUsers {
+		margin-left:.3rem;
+	}
+
+	.navbar .icons {
+		color:#fff;
+	}
+
+	.btn {
+		font-size: 24px;
+		line-height:24px;
+	}
+
+	.btn.btn-primary {
+		background-color:#ffd100;
+		color:#033241;
+		background-image: none;
+		border-radius:none;
+	}
+
+	.navbar-inner {
+		background-color: #033241;
+		background-image:none;
+	}
+
+
+	/* Chat */
+
+	#main {
+		padding-top: 40px;
+	}
+
+	.container {
+		width:100%;
+	}
+
+	.slimScrollDiv {
+		/*height:80%;*/
+	}
+
+	.slimScrollDiv #chatEntries {
+		border:0;
+		border-radius: 0;
+		background-color:#00A3AD;
+		margin-bottom: 0;
+		/*height:490px !important;*/
+	}
+
+	#entries {
+		position: fixed;
+		bottom: 0;
+		height: 40px;
+		width:100%;
+		margin:0;
+	}
+
+	#entries #messageInput {
+		width:75%;
+		margin:0;
+		height:30px;
+		font-size:16px;
+	}
+
+	#submit {
+		font-size:1rem;
+		height:100%;
+		width:auto;
+	}
+
+	/* Messaging */
+
+	.message {
+		width: 70%;
+		padding: 0 .5rem;
+		margin: .3rem;
+		border-radius: 1rem 1rem 1rem 0;
+		background-color: #033241;
+		color:#fff;
+		border-radius: 1rem 1rem 1rem 0;
+	}
+
+	.message.self {
+		background-color: #FEE044;
+		color:#033241;
+		float:right;
+		border-radius: 1rem 1rem 0 1rem;
+	}
+
+	.infos {
+		color:#00A3AD;
+		margin:.5rem .3rem .3rem .3rem;
+	}
+
+}
