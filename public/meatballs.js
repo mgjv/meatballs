@@ -15,9 +15,6 @@ $(function() {
     // Calculate size of chat entry window (removing top and bottom bars)
     var chatEntriesHeight = $(window).height() - 30;
 
-    $("#alertPseudo").hide();
-    $('#modalPseudo').modal('show');
-    $("#pseudoSubmit").click(function() {setPseudo()});
     $("#chatEntries").slimScroll({height: chatEntriesHeight});
     submitButton.click(function() {sentMessage();});
     setHeight(chatEntriesHeight);
@@ -47,22 +44,23 @@ socket.on('message', function(data) {
     addMessage(data['message'], data['pseudo'], new Date().toISOString(), false);
     console.log(data);
 });
+socket.on('pseudoStatus', function(data){
+    if (data.error) {
+        console.log('server error getting username');
+    }
+    else {
+        pseudo = data.pseudo;
+    }
+});
 
 //Help functions
-function sentMessage() {
+function sendMessage() {
     if (messageContainer.val() != "") 
     {
-        if (pseudo == "") 
-        {
-            $('#modalPseudo').modal('show');
-        }
-        else 
-        {
-            socket.emit('message', messageContainer.val());
-            addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
-            messageContainer.val('');
-            submitButton.button('loading');
-        }
+        socket.emit('message', messageContainer.val());
+        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
+        messageContainer.val('');
+        submitButton.button('loading');
     }
 }
 function addMessage(msg, pseudo, date, self) {
@@ -81,24 +79,6 @@ function bindButton() {
         if (messageContainer.val() == "") submitButton.button('loading');
         else submitButton.button('reset');
     });
-}
-function setPseudo() {
-    if ($("#pseudoInput").val() != "")
-    {
-        socket.emit('setPseudo', $("#pseudoInput").val());
-        socket.on('pseudoStatus', function(data){
-            if(data == "ok")
-            {
-                $('#modalPseudo').modal('hide');
-                $("#alertPseudo").hide();
-                pseudo = $("#pseudoInput").val();
-            }
-            else
-            {
-                $("#alertPseudo").slideDown();
-            }
-        })
-    }
 }
 function time() {
     $("time").each(function(){
