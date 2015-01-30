@@ -60,6 +60,7 @@ function sendMessage() {
         addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
         messageContainer.val('');
         submitButton.button('loading');
+        messageContainer.focus();
     }
 }
 function addMessage(msg, pseudo, date, self) {
