@@ -73,8 +73,6 @@ function addMessage(msg, pseudo, date, self) {
     var elem = document.getElementById('chatEntries');
     $('input#messageInput').blur();
     elem.scrollTop = elem.scrollHeight;
-    window.elementa = elem;
-    console.log(elem.scrollHeight);
     time();
 }
 
