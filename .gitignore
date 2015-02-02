@@ -1,6 +1,7 @@
 node_modules
 lib-cov/*
 coverage/*
+.*.sw[po]
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
