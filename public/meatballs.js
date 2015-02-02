@@ -25,7 +25,7 @@ $(function() {
     window.setInterval(time, 1000*10);
 
     // Calculate size of chat entry window (removing top and bottom bars)
-    var chatEntriesHeight = $(window).height() - 30;
+    var chatEntriesHeight = $(window).height() - 80;
 
     submitButton.click(function() {sendMessage();});
     $("#chatEntries").slimScroll({height: chatEntriesHeight});
@@ -90,6 +90,4 @@ function time() {
 }
 function setHeight(chatEntriesHeight) {
     $(".slimScrollDiv").height(chatEntriesHeight);
-    $(".slimScrollDiv").css({'overflow': 'visible'})
-    $(".slimScrollDiv #chatEntries").css({'paddingTop': 50,'paddingBottom': 50});
 }
