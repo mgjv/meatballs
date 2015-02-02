@@ -5,6 +5,18 @@ var pseudo = "";
 //     event.preventDefault();
 // }
 
+//Help functions
+function sendMessage() {
+    if (messageContainer.val() != "") 
+    {
+        socket.emit('message', messageContainer.val());
+        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
+        messageContainer.val('');
+        submitButton.button('loading');
+        messageContainer.focus();
+    }
+}
+
 // Init
 $(function() {
     messageContainer = $('#messageInput');
@@ -14,6 +26,7 @@ $(function() {
 
     // Calculate size of chat entry window (removing top and bottom bars)
     var chatEntriesHeight = $(window).height() - 30;
+
     submitButton.click(function() {sendMessage();});
     $("#chatEntries").slimScroll({height: chatEntriesHeight});
     setHeight(chatEntriesHeight);
@@ -52,17 +65,7 @@ socket.on('pseudoStatus', function(data){
     }
 });
 
-//Help functions
-function sendMessage() {
-    if (messageContainer.val() != "") 
-    {
-        socket.emit('message', messageContainer.val());
-        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
-        messageContainer.val('');
-        submitButton.button('loading');
-        messageContainer.focus();
-    }
-}
+
 function addMessage(msg, pseudo, date, self) {
     if(self) var classDiv = "row message self";
     else var classDiv = "row message";
