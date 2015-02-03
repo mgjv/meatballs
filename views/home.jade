@@ -14,10 +14,11 @@ html
 	body
 		div.container#main
 			div.navbar.navbar-fixed-top
-				div.navbar-inner
+				div.navbar-inner(href="#modalInfos", data-toggle="modal")
 					div.container
 						a#info(href="#modalInfos", data-toggle="modal")
 						span.logo
+						span.awslogo
 						a#info.brand(href="#modalInfos", data-toggle="modal") Q &amp; A
 						span.userCount 
 							span.icon-user 
@@ -31,13 +32,11 @@ html
 		div.modal-header
 			h3 About
 		div.modal-body
-			p 	This application has been made with 
+			p 	Built with
 				a(href="http://nodejs.org/") Node.js
 				|, 
 				a(href="http://socket.io/") Socket.io
 				|, 
 				a(href="http://expressjs.com/") Express 
-				| and 
-				a(href="http://jade-lang.com/") Jade
 				| .
-			p 	It is running on AWS Elastic Beanstalk at a cost of about 5 cents per hour.
+			p 	It is running on AWS Elastic Beanstalk.

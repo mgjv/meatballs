@@ -47,8 +47,21 @@
 		background: url(http://smb.optus.com.au/opfiles/v11364/ys/online-style/images/logo/logo_optus.png) 0 0 no-repeat;
 		background-size: 87px 21px;
 		position: absolute;
+		top: 7px;
+		right: 89px;
+	}
+
+	.navbar span.awslogo {
+		width: 74px;
+		height: 30px;
+		display: block;
+		background: url(http://awsmedia.s3.amazonaws.com/AWS_Logo_PoweredBy_127px.png) 5px 3px no-repeat;
+        background-color: white;
+		background-size: 64px 24px;
+		position: absolute;
 		top: 5px;
 		right: 5px;
+        border-radius: 0.4rem;
 	}
 
 	.navbar .brand {
