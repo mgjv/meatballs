@@ -55,7 +55,7 @@ socket.on('nbUsers', function(msg) {
     $("#nbUsers").html(msg.count);
 });
 socket.on('message', function(data) {
-    addMessage(data['message'], data['pseudo'], new Date().toISOString(), false, data['msgcount']);
+    addMessage(data['message'], data['pseudo'], data['date'], false, data['msgcount']);
     console.log(data);
 });
 socket.on('pseudoStatus', function(data){
