@@ -24,7 +24,7 @@ html
 							span#nbUsers
 			div#chatEntries
 			div.row#entries
-				input(type='text')#messageInput
+				input(type='text', placeholder='Type message here')#messageInput
 				button.btn#submit(data-loading-text="Send") Send
 			div#nbUsersDiv
 	div.modal.fade#modalInfos
@@ -40,3 +40,4 @@ html
 				| and 
 				a(href="http://jade-lang.com/") Jade
 				| .
+			p 	It is running on AWS Elastic Beanstalk at a cost of about 5 cents per hour.
