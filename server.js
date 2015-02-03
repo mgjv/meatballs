@@ -32,6 +32,7 @@ app.get('/', function(req, res){
 // Handle the socket.io connections
 var users = 0; //count the users
 var userno = 0; //for generating usernames
+var msgcount = 0; //count of all messages
 
 io.sockets.on('connection', function (socket) { // First connection
     users += 1;
@@ -58,7 +59,7 @@ io.sockets.on('connection', function (socket) { // First connection
     socket.on('message', function (data) {
         var name = returnPseudo(socket);
         if (name) {
-            var transmit = {date : new Date().toISOString(), pseudo : name, message : data};
+            var transmit = {date : new Date().toISOString(), pseudo : name, message : data, msgcount: ++msgcount};
             socket.broadcast.emit('message', transmit);
             console.log("user "+ transmit['pseudo'] +" said \""+data+"\"");
         }

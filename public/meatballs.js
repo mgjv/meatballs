@@ -1,5 +1,6 @@
 var messageContainer, submitButton;
 var pseudo = "";
+var msgcount = 0;
 
 // document.ontouchmove = function(event){
 //     event.preventDefault();
@@ -10,7 +11,7 @@ function sendMessage() {
     if (messageContainer.val() != "") 
     {
         socket.emit('message', messageContainer.val());
-        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
+        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true, msgcount+1);
         messageContainer.val('');
         submitButton.button('loading');
         messageContainer.focus();
@@ -55,7 +56,7 @@ socket.on('nbUsers', function(msg) {
     $("#nbUsers").html(msg.count);
 });
 socket.on('message', function(data) {
-    addMessage(data['message'], data['pseudo'], new Date().toISOString(), false);
+    addMessage(data['message'], data['pseudo'], new Date().toISOString(), false, data['msgcount']);
     console.log(data);
 });
 socket.on('pseudoStatus', function(data){
@@ -68,10 +69,11 @@ socket.on('pseudoStatus', function(data){
 });
 
 
-function addMessage(msg, pseudo, date, self) {
+function addMessage(msg, pseudo, date, self, count) {
+    msgcount = count;
     if(self) var classDiv = "row message self";
     else var classDiv = "row message";
-    $("#chatEntries").append('<div class="'+classDiv+'"><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
+    $("#chatEntries").append('<div class="'+classDiv+'"><div class="message-number">#'+count+'</div><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
     var elem = document.getElementById('chatEntries');
     elem.scrollTop = elem.scrollHeight;
     time();
