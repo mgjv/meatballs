@@ -14,7 +14,6 @@ function sendMessage() {
         addMessage(messageContainer.val(), "Me", new Date().toISOString(), true, msgcount+1);
         messageContainer.val('');
         submitButton.button('loading');
-        messageContainer.focus();
     }
 }
 
