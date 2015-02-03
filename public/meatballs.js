@@ -42,6 +42,8 @@ $(function() {
             return true;
         }
     }); // end of function
+
+    messageContainer.focus();
 });
 
 //Socket.io
@@ -71,7 +73,6 @@ function addMessage(msg, pseudo, date, self) {
     else var classDiv = "row message";
     $("#chatEntries").append('<div class="'+classDiv+'"><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
     var elem = document.getElementById('chatEntries');
-    $('input#messageInput').blur();
     elem.scrollTop = elem.scrollHeight;
     time();
 }
