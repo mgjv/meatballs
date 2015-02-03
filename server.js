@@ -33,6 +33,7 @@ app.get('/', function(req, res){
 var users = 0; //count the users
 var userno = 0; //for generating usernames
 var msgcount = 0; //count of all messages
+var msglog = [];
 
 io.sockets.on('connection', function (socket) { // First connection
     users += 1;
@@ -55,11 +56,14 @@ io.sockets.on('connection', function (socket) { // First connection
         socket.emit('pseudoStatus', {'status': 'error'}) // Send the error
     }
 
+    replayMessages(socket);
+
     // Broadcast message to all
     socket.on('message', function (data) {
         var name = returnPseudo(socket);
         if (name) {
             var transmit = {date : new Date().toISOString(), pseudo : name, message : data, msgcount: ++msgcount};
+            recordMessage(transmit);
             socket.broadcast.emit('message', transmit);
             console.log("user "+ transmit['pseudo'] +" said \""+data+"\"");
         }
@@ -87,5 +91,16 @@ function reloadUsers() { // Send the count of the users to all
 function returnPseudo(socket) { // Return the name of the user
     return socket.pseudo;
 }
+
+function recordMessage(message) {
+    msglog.push(message);
+}
+
+function replayMessages(socket) {
+    msglog.forEach(function(m) {
+        socket.emit('message', m);
+    });
+}
+
 exports.server = server;
 exports.app = app;
