@@ -226,7 +226,7 @@
 		padding-bottom: 80px;
     }
 
-    .message-number {
+    .message-number, .message.self .message-number {
         font-size: 18px;
         padding-top: 1rem;
     }
