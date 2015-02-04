@@ -70,7 +70,9 @@ function addMessage(msg, pseudo, date, self, count) {
     msgcount = count;
     if(self) var classDiv = "row message self";
     else var classDiv = "row message";
-    $("#chatEntries").append('<div class="'+classDiv+'"><div class="message-number">#'+count+'</div><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
+    $("#chatEntries").append('<div class="'+classDiv+'"><div class="message-number">#'+count+'</div><p class="infos"><span class="pseudo"></span>, <time class="date" title="'+date+'">'+date+'</time></p><p class="msg"></p></div>');
+    $("#chatEntries .pseudo").last().text(pseudo);
+    $("#chatEntries p.msg").last().text(msg);
     var body = $("body")[0];
     body.scrollTop = body.scrollHeight;
     time($(".infos").last());
