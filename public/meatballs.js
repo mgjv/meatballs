@@ -25,11 +25,9 @@ $(function() {
     window.setInterval(time, 1000*10);
 
     // Calculate size of chat entry window (removing top and bottom bars)
-    var chatEntriesHeight = $(window).height() - 80;
+    $("#chatEntries").height($(window).height() - 80);
 
     submitButton.click(function() {sendMessage();});
-    $("#chatEntries").slimScroll({height: chatEntriesHeight});
-    setHeight(chatEntriesHeight);
 
     $("input").bind("keydown", function(event) {
         // track enter key
@@ -73,9 +71,9 @@ function addMessage(msg, pseudo, date, self, count) {
     if(self) var classDiv = "row message self";
     else var classDiv = "row message";
     $("#chatEntries").append('<div class="'+classDiv+'"><div class="message-number">#'+count+'</div><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
-    var elem = document.getElementById('chatEntries');
-    elem.scrollTop = elem.scrollHeight;
-    time();
+    var body = $("body")[0];
+    body.scrollTop = body.scrollHeight;
+    time($(".infos").last());
 }
 
 function bindButton() {
@@ -85,11 +83,8 @@ function bindButton() {
         else submitButton.button('reset');
     });
 }
-function time() {
-    $("time").each(function(){
+function time(context) {
+    $("time", context).each(function(){
         $(this).text($.timeago($(this).attr('title')));
     });
-}
-function setHeight(chatEntriesHeight) {
-    $(".slimScrollDiv").height(chatEntriesHeight);
 }

@@ -111,29 +111,27 @@
 	/* Chat */
 
 	#main {
-		padding-top: 40px;
+		padding: 40px 0 40px 0;
+		background-color:#00A3AD;
 	}
 
 	.container {
 		width:100%;
 	}
 
-	.slimScrollDiv {
-		/*height:80%;*/
-	}
-
-	.slimScrollDiv #chatEntries {
+	#chatEntries {
 		border:0;
 		border-radius: 0;
 		background-color:#00A3AD;
 		margin-bottom: 0;
-		/*height:490px !important;*/
+		height: inherit;
+        box-shadow: none;
 	}
 
 	#entries {
 		position: fixed;
 		bottom: 0;
-		height: 40px;
+		height: 80px;
 		width:100%;
 		margin:0;
 		background-color:#00A3AD;
@@ -142,15 +140,16 @@
 	#entries #messageInput {
 		width:75%;
 		margin:0;
-		height:30px;
+		height:70px;
 		font-size:16px;
+        word-break: break-word;
 	}
 
-	#submit {
+	#submit.btn {
 		font-size:1rem;
 		height:100%;
-		width:auto;
-		float:right;
+		width:5em;
+        padding: 0;
 	}
 
 	/* Messaging */
@@ -211,12 +210,25 @@
         line-height: 16px;
     }
 
+	#entries {
+		height: 40px;
+    }
+
+	#entries #messageInput {
+		height: 30px;
+	}
+
 }
 
 @media (max-width: 768px) {
 
+	#main {
+		padding-bottom: 80px;
+    }
+
     .message-number {
         font-size: 18px;
+        padding-top: 1rem;
     }
 
     .message p {
@@ -233,5 +245,13 @@
         font-size: 14px;
         line-height: 14px;
     }
+
+	#entries {
+		height: 80px;
+    }
+
+	#entries #messageInput {
+		height:70px;
+	}
 
 }
