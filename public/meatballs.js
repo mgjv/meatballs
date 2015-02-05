@@ -1,9 +1,21 @@
 var messageContainer, submitButton;
 var pseudo = "";
+var msgcount = 0;
 
 // document.ontouchmove = function(event){
 //     event.preventDefault();
 // }
+
+//Help functions
+function sendMessage() {
+    if (messageContainer.val() != "") 
+    {
+        socket.emit('message', messageContainer.val());
+        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true, msgcount+1);
+        messageContainer.val('');
+        submitButton.button('loading');
+    }
+}
 
 // Init
 $(function() {
@@ -13,10 +25,9 @@ $(function() {
     window.setInterval(time, 1000*10);
 
     // Calculate size of chat entry window (removing top and bottom bars)
-    var chatEntriesHeight = $(window).height() - 30;
+    $("#chatEntries").height($(window).height() - 80);
+
     submitButton.click(function() {sendMessage();});
-    $("#chatEntries").slimScroll({height: chatEntriesHeight});
-    setHeight(chatEntriesHeight);
 
     $("input").bind("keydown", function(event) {
         // track enter key
@@ -29,6 +40,8 @@ $(function() {
             return true;
         }
     }); // end of function
+
+    messageContainer.focus();
 });
 
 //Socket.io
@@ -40,7 +53,7 @@ socket.on('nbUsers', function(msg) {
     $("#nbUsers").html(msg.count);
 });
 socket.on('message', function(data) {
-    addMessage(data['message'], data['pseudo'], new Date().toISOString(), false);
+    addMessage(data['message'], data['pseudo'], data['date'], false, data['msgcount']);
     console.log(data);
 });
 socket.on('pseudoStatus', function(data){
@@ -52,25 +65,17 @@ socket.on('pseudoStatus', function(data){
     }
 });
 
-//Help functions
-function sendMessage() {
-    if (messageContainer.val() != "") 
-    {
-        socket.emit('message', messageContainer.val());
-        addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
-        messageContainer.val('');
-        submitButton.button('loading');
-        messageContainer.focus();
-    }
-}
-function addMessage(msg, pseudo, date, self) {
+
+function addMessage(msg, pseudo, date, self, count) {
+    msgcount = count;
     if(self) var classDiv = "row message self";
     else var classDiv = "row message";
-    $("#chatEntries").append('<div class="'+classDiv+'"><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
-    var elem = document.getElementById('chatEntries');
-    $('input#messageInput').blur();
-    elem.scrollTop = elem.scrollHeight;
-    time();
+    $("#chatEntries").append('<div class="'+classDiv+'"><div class="message-number">#'+count+'</div><p class="infos"><span class="pseudo"></span>, <time class="date" title="'+date+'">'+date+'</time></p><p class="msg"></p></div>');
+    $("#chatEntries .pseudo").last().text(pseudo);
+    $("#chatEntries p.msg").last().text(msg);
+    var body = $("body")[0];
+    body.scrollTop = body.scrollHeight;
+    time($(".infos").last());
 }
 
 function bindButton() {
@@ -80,13 +85,8 @@ function bindButton() {
         else submitButton.button('reset');
     });
 }
-function time() {
-    $("time").each(function(){
+function time(context) {
+    $("time", context).each(function(){
         $(this).text($.timeago($(this).attr('title')));
     });
-}
-function setHeight(chatEntriesHeight) {
-    $(".slimScrollDiv").height(chatEntriesHeight);
-    $(".slimScrollDiv").css({'overflow': 'visible'})
-    $(".slimScrollDiv #chatEntries").css({'paddingTop': 50,'paddingBottom': 50});
 }

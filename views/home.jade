@@ -1,11 +1,11 @@
 doctype html
 html
 	head
-		title Felafels
+		title Q &amp; A
 		link(rel="stylesheet", href="style.css")
 		link(rel="stylesheet", href="css/townhall.css")
 		script(src='http://code.jquery.com/jquery-1.7.1.min.js')
-		script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js')
+		script(src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js')
 		script(src="/socket.io/socket.io.js")
 		script(src="script.js")
 		script(src="js/jquery.slimscroll.js")
@@ -18,35 +18,25 @@ html
 					div.container
 						a#info(href="#modalInfos", data-toggle="modal")
 						span.logo
-						a#info.brand(href="#modalInfos", data-toggle="modal") IT Town Hall
-						span.userCount 
-							span.icon-user 
+						span.awslogo
+						a#info.brand(href="#modalInfos", data-toggle="modal") Q &amp; A
+						span.userCount
+							span.icon-user
 							span#nbUsers
 			div#chatEntries
 			div.row#entries
-				input(type='text')#messageInput
+				input(type='text', placeholder='Type message here')#messageInput
 				button.btn#submit(data-loading-text="Send") Send
 			div#nbUsersDiv
-	div.modal.fade#modalPseudo
-		div.modal-header
-			h3 Hey you!
-		div.modal-body
-			p What's your name?
-			input(type='text' placeholder='Quick! Type it in..')#pseudoInput
-			div.alert.alert-error#alertPseudo
-				| This name is already used. Choose another.
-		div.modal-footer
-			button.btn.btn-primary#pseudoSubmit Join the talk
 	div.modal.fade#modalInfos
 		div.modal-header
 			h3 About
 		div.modal-body
-			p 	This application has been made with 
+			p 	Built with
 				a(href="http://nodejs.org/") Node.js
-				|, 
+				|,
 				a(href="http://socket.io/") Socket.io
-				|, 
-				a(href="http://expressjs.com/") Express 
-				| and 
-				a(href="http://jade-lang.com/") Jade
-				| .
+				|,
+				a(href="http://expressjs.com/") Express
+				|.
+			p 	Running on AWS Elastic Beanstalk.
