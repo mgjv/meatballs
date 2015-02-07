@@ -72,18 +72,30 @@
 		z-index: 10000;
 	}
 
-	.navbar .userCount {
-		background: #00A3AD;
-		border-radius: 1rem;
-		width:auto;
-		padding:.1rem .5rem;
+	.navbar .userName #userName {
+		margin-left:.3rem;
+	}
+
+	.navbar .userName {
+		width: auto;
+		padding: .1rem .5rem;
 		color: #fff;
 		top: 9px;
-		position: absolute;
+		position: relative;
 	}
 
 	.navbar .userCount #nbUsers {
 		margin-left:.3rem;
+	}
+
+	.navbar .userCount {
+		background: #00A3AD;
+		border-radius: 1rem;
+		width: auto;
+		padding: .1rem .5rem;
+		color: #fff;
+		top: 9px;
+		position: relative;
 	}
 
 	.navbar .icons {
@@ -92,12 +104,12 @@
 
 	.btn {
 		font-size: 24px;
-		line-height:24px;
+		line-height: 24px;
 	}
 
 	.btn.btn-primary {
-		background-color:#ffd100;
-		color:#033241;
+		background-color: #ffd100;
+		color: #033241;
 		background-image: none;
 		border-radius:none;
 	}

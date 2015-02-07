@@ -2,9 +2,9 @@
 	<div class="row message {{ self ? 'self' : ''}}">
 	  <div class="message-number">#{{number}}</div>
 	  <p class="infos">
-	  	<span class="pseudo">{{pseudo}}</span>, 
+	  	<span class="pseudo">{{self ? "Me" : pseudo}}</span>, 
 	  	<time class="date" title="{{date}}">{{date}}</time>
 	  </p>
-	  <p class="msg">{{text}}</p>
+	  <p class="msg">{{message}}</p>
 	</div>
 {{/each}}
