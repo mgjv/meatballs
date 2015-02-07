@@ -9,6 +9,14 @@ var ractive = new Ractive({
 	}
 })
 
+ractive.on ('vote', function(event, messageNum) {
+	console.log("Received a vote for message " + messageNum)
+	var index = messageNum - 1
+	ractive.get('messages')[index].votes++
+	ractive.update('messages')
+	socket.emit('vote', messageNum)
+})
+
 // Socket.io
 var socket = io.connect();
 
@@ -66,6 +74,7 @@ function addMessage(msg) {
         date: new Date().toISOString(),
         pseudo: user,
         message: msg,
+        votes: 0,
         self: true
     })
 	socket.emit('message', msg)

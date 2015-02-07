@@ -27,8 +27,13 @@ Enhancements: Paul Bennett, Kim Jackson, Guillaume Poulet, Martien Verbruggen
 
 ### TODO
 
-- Support multiple chats at once
-- Allow voting on messages
-- provide "most popular" list, based on votes\
+In rough order of priority:
+
+- Limit voting to once per user
+- provide "most popular" list, based on votes
 - provide a 'shared token' type of access limitation
+- Don't scroll unless at the bottom of the list
+- Don't scroll unless necessary (do not scroll when list is smaller than screen)
 - server-side persistence of chat
+- compression of socket messages
+- Support multiple chats at once

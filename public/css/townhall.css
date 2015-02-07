@@ -184,6 +184,20 @@
 		border-radius: 1rem 1rem 0 1rem;
 	}
 
+	.message.self .vote {
+		float: left;
+		color: #000;
+		background: #FEE044;
+	}
+
+	.message .vote {
+		background: #00A3AD;
+		border-radius: 1rem;
+		float: right;
+		padding: .15rem .3rem;
+		color: #fff;
+	}
+
     .message-number {
         float: left;
         padding: 1.5rem 0.5rem 0 0;

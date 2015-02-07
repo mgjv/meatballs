@@ -4,6 +4,15 @@
 	  <p class="infos">
 	  	<span class="pseudo">{{self ? "Me" : pseudo}}</span>, 
 	  	<time class="date" title="{{date}}">{{date}}</time>
+	  	{{#if self}}
+	  		<span class="vote">
+	  			<div class="icon-heart"></div> {{votes}}
+	  		</span>
+	  	{{else}}
+	  		<span class="vote" on-click='vote:{{number}}'>
+	  			<div class="icon-heart"></div> {{votes}}
+	  		</span>
+	  	{{/if}}
 	  </p>
 	  <p class="msg">{{message}}</p>
 	</div>

@@ -33,13 +33,12 @@ app.get('/', function(req, res){
 
 var users = 0; //count the users
 var userno = 0; //for generating usernames
-var msgcount = 0; //count of all messages
 var messages = [];
 
 io.sockets.on('connection', function (socket) { // First connection
     users += 1;
     userno += 1;
-    reloadUserCount();
+    sendUserCount();
 
     // Test that socket can send message to itself
     socket.on('echo', function(msg) {
@@ -51,7 +50,7 @@ io.sockets.on('connection', function (socket) { // First connection
     console.log("user " + socket.pseudo + " connected");
 
     // Send the current set of messages to the client
-    socket.emit('all-messages', messages);
+    sendMessages(socket)
 
     // Allow client to request a user name
     socket.on('wantPseudo', function(newPseudo) {
@@ -67,22 +66,27 @@ io.sockets.on('connection', function (socket) { // First connection
                 date: new Date().toISOString(), 
                 pseudo: name, 
                 message: data, 
-                msgcount: ++msgcount
+                votes: 0
             };
             messages.push(message);
-            io.emit('all-messages', messages);
+            sendMessages();
             console.log("user " + message['pseudo'] + " said \"" + data + "\"");
         }
     });
 
+    socket.on('vote', function(messageNum) {
+        var index = messageNum - 1;
+        messages[index].votes++;
+        sendMessages();
+    });
+
     socket.on('disconnect', function () {
         users -= 1;
-        reloadUserCount();
+        sendUserCount();
         var pseudo = socket.pseudo;
         if (pseudo) {
             var index = pseudoArray.indexOf(pseudo);
             pseudoArray.splice(index, 1);
-            //pseudoArray = pseudoArray.slice(index, index + 1);
             console.log("user " + pseudo + " disconnected");
         }
     });
@@ -105,8 +109,17 @@ function assignPseudo(socket, pseudo) {
     }   
 }
 
+function sendMessages(socket) {
+    if (socket) {
+        socket.emit('all-messages', messages);
+    } 
+    else {
+        io.emit('all-messages', messages);
+    }
+}
+
 // Send the count of the users to all clients
-function reloadUserCount() {
+function sendUserCount() {
     io.emit('nbUsers', users);
 }
 
