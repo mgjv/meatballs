@@ -46,21 +46,17 @@ io.sockets.on('connection', function (socket) { // First connection
         socket.emit('echo', msg);
     });
 
-    // Assign a name to the user
-    var pseudo = 'User #' + userno;
+    // Automatically assign a name to the user
+    assignPseudo(socket, 'User #' + userno);
+    console.log("user " + socket.pseudo + " connected");
 
-     // Test if the name is already taken
-    if (pseudoArray.indexOf(pseudo) == -1) {
-        socket.pseudo = pseudo;
-        pseudoArray.push(pseudo);
-        socket.emit('pseudoStatus', {'status': 'ok', 'pseudo': pseudo});
-        console.log("user " + pseudo + " connected");
-    } 
-    else {
-        socket.emit('pseudoStatus', {'status': 'error'}) // Send the error
-    }
-
+    // Send the current set of messages to the client
     socket.emit('all-messages', messages);
+
+    // Allow client to request a user name
+    socket.on('wantPseudo', function(newPseudo) {
+        assignPseudo(socket, newPseudo);
+    });
 
     // Receive a message and update all clients
     socket.on('message', function (data) {
@@ -85,11 +81,29 @@ io.sockets.on('connection', function (socket) { // First connection
         var pseudo = socket.pseudo;
         if (pseudo) {
             var index = pseudoArray.indexOf(pseudo);
-            pseudoArray = pseudoArray.slice(index, index+1);
+            pseudoArray.splice(index, 1);
+            //pseudoArray = pseudoArray.slice(index, index + 1);
             console.log("user " + pseudo + " disconnected");
         }
     });
 });
+
+// Assign a pseudo name, and inform the client
+function assignPseudo(socket, pseudo) {
+     // Test if the name is already taken
+    if (pseudoArray.indexOf(pseudo) == -1) {
+        if (socket.pseudo) {
+            console.log("user " + socket.pseudo + " renamed to " + pseudo)
+        } 
+        socket.pseudo = pseudo;
+        pseudoArray.push(pseudo);
+        socket.emit('pseudoStatus', {'status': 'ok', 'pseudo': pseudo});
+    } 
+    else {
+        console.log("user name " + pseudo + " is already taken");
+        socket.emit('pseudoStatus', {'status': 'error'}) // Send the error
+    }   
+}
 
 // Send the count of the users to all clients
 function reloadUserCount() {

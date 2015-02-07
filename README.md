@@ -27,11 +27,8 @@ Enhancements: Paul Bennett, Kim Jackson, Guillaume Poulet, Martien Verbruggen
 
 ### TODO
 
-- Make awareness of "self" stickier, maybe with a cookie or other in-page variable. 
-  currently a websocket reset loses awareness
 - Support multiple chats at once
 - Allow voting on messages
 - provide "most popular" list, based on votes\
 - provide a 'shared token' type of access limitation
 - server-side persistence of chat
-- Flux-type communication (local update, server notification, full update on turnaround)
