@@ -60,7 +60,7 @@ io.sockets.on('connection', function (socket) { // First connection
 
     // Broadcast message to all
     socket.on('message', function (data) {
-        var name = returnPseudo(socket);
+        var name = socket.pseudo;
         if (name) {
             var transmit = {date : new Date().toISOString(), pseudo : name, message : data, msgcount: ++msgcount};
             recordMessage(transmit);
@@ -72,7 +72,7 @@ io.sockets.on('connection', function (socket) { // First connection
     socket.on('disconnect', function () { // Disconnection of the client
         users -= 1;
         reloadUsers();
-        var pseudo = returnPseudo(socket);
+        var pseudo = socket.pseudo;
         if (pseudo) {
             var index = pseudoArray.indexOf(pseudo);
             pseudoArray = pseudoArray.slice(index, index+1);
@@ -87,9 +87,6 @@ function reloadUsers() { // Send the count of the users to all
     } else {
         io.sockets.emit('nbUsers', {"nb": "are " + users, count: users});
     }
-}
-function returnPseudo(socket) { // Return the name of the user
-    return socket.pseudo;
 }
 
 function recordMessage(message) {
