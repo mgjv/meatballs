@@ -1,0 +1,10 @@
+{{#each messages}}
+	<div class="row message {{ self ? 'self' : ''}}">
+	  <div class="message-number">#{{number}}</div>
+	  <p class="infos">
+	  	<span class="pseudo">{{pseudo}}</span>, 
+	  	<time class="date" title="{{date}}">{{date}}</time>
+	  </p>
+	  <p class="msg">{{text}}</p>
+	</div>
+{{/each}}

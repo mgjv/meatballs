@@ -1,12 +1,12 @@
 var messageContainer, submitButton;
 var pseudo = "";
-var msgcount = 0;
+var msgcount = 0; // TODO: replace with messages.length
 
-// document.ontouchmove = function(event){
-//     event.preventDefault();
-// }
+// See addMessage for format
+var messages = [];
 
-//Help functions
+
+// Help functions
 function sendMessage() {
     if (messageContainer.val() != "") 
     {
@@ -44,7 +44,7 @@ $(function() {
     messageContainer.focus();
 });
 
-//Socket.io
+// Socket.io
 var socket = io.connect();
 socket.on('connect', function() {
     console.log('connected');
@@ -65,28 +65,42 @@ socket.on('pseudoStatus', function(data){
     }
 });
 
+// Scroll to the bottom of the page
+function scrollToBottom() {
+    var body = $("body")[0];
+    body.scrollTop = body.scrollHeight;
+}
 
 function addMessage(msg, pseudo, date, self, count) {
     msgcount = count;
-    if(self) var classDiv = "row message self";
-    else var classDiv = "row message";
-    $("#chatEntries").append('<div class="'+classDiv+'"><div class="message-number">#'+count+'</div><p class="infos"><span class="pseudo"></span>, <time class="date" title="'+date+'">'+date+'</time></p><p class="msg"></p></div>');
-    $("#chatEntries .pseudo").last().text(pseudo);
-    $("#chatEntries p.msg").last().text(msg);
-    var body = $("body")[0];
-    body.scrollTop = body.scrollHeight;
-    time($(".infos").last());
+
+    messages.push({
+        text: msg,
+        pseudo: pseudo,
+        date: date,
+        self: self,
+        number: messages.length + 1
+    });
+
+    scrollToBottom();
 }
 
 function bindButton() {
     submitButton.button('loading');
     messageContainer.on('input', function() {
-        if (messageContainer.val() == "") submitButton.button('loading');
-        else submitButton.button('reset');
+        if (messageContainer.val() == "") {
+            submitButton.button('loading');
+        }
+        else {
+            submitButton.button('reset');
+        }
     });
 }
+
 function time(context) {
     $("time", context).each(function(){
         $(this).text($.timeago($(this).attr('title')));
     });
 }
+
+

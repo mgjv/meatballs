@@ -6,9 +6,12 @@ html
 		link(rel="stylesheet", href="css/townhall.css")
 		script(src='http://code.jquery.com/jquery-1.7.1.min.js')
 		script(src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js')
+		script(src='http://cdn.ractivejs.org/latest/ractive.min.js')
 		script(src="/socket.io/socket.io.js")
 		script(src="script.js")
 		script(src="js/jquery.slimscroll.js")
+		script#message-template(type="text/ractive")
+			include ./message-list.hbs
 		script(src="meatballs.js")
 		meta(name='viewport', content='width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi')
 	body
@@ -23,7 +26,10 @@ html
 						span.userCount
 							span.icon-user
 							span#nbUsers
-			div#chatEntries
+			//div#chatEntries
+			div#output
+			script
+				include ../message-handler.js
 			div.row#entries
 				input(type='text', placeholder='Type message here')#messageInput
 				button.btn#submit(data-loading-text="Send") Send

@@ -691,7 +691,8 @@ a.thumbnail:hover{border-color:#0088cc;-webkit-box-shadow:0 1px 4px rgba(0, 105,
 #main {
 	padding-top: 70px;
 }
-#chatEntries {
+/*TODO: remove output*/
+#chatEntries, #output {
     border: 1px solid grey;
     border-radius: 5px;
     background-color: rgba(0,0,0,.05);
