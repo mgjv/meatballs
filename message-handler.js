@@ -10,7 +10,7 @@ var ractive = new Ractive({
 })
 
 ractive.on ('vote', function(event, messageNum) {
-	console.log("Received a vote for message " + messageNum)
+	// console.log("Received a vote for message " + messageNum)
 	var index = messageNum - 1
 	ractive.get('messages')[index].votes++
 	ractive.update('messages')
@@ -21,7 +21,7 @@ ractive.on ('vote', function(event, messageNum) {
 var socket = io.connect();
 
 socket.on('connect', function() {
-    console.log('connected')
+    // console.log('connected to chat server')
     // request a user name
     // Todo: There's a slight race condition when reloading the page. 
     // Cleanup server side is slower than reconnection, with the result 
@@ -39,7 +39,7 @@ socket.on('nbUsers', function(count) {
 })
 
 socket.on('all-messages', function(messages) {
-	console.log('Received message update: ' + messages.length)
+	// console.log('Received message update: ' + messages.length)
     messages.forEach(fixMessageOwner)
     ractive.set("messages", messages)
     scrollToBottom()
@@ -47,7 +47,7 @@ socket.on('all-messages', function(messages) {
 
 socket.on('pseudoStatus', function(data){
     if (data.pseudo) {
-        console.log('Received user name ' + data.pseudo)
+        // console.log('Received user name ' + data.pseudo)
         user = data.pseudo;
         $('#userName').html(user)
         if (!$.cookie('pseudo')) {
@@ -79,5 +79,5 @@ function addMessage(msg) {
     })
 	socket.emit('message', msg)
  
-    scrollToBottom()
+    scrollToBottom(true)
 }

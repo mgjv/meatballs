@@ -1,25 +1,23 @@
-var messageContainer, submitButton;
-
-// Help functions
-function sendMessage() {
-    if (messageContainer.val() != "") {
-        addMessage(messageContainer.val());
-        messageContainer.val('');
-        submitButton.button('loading');
-    }
-}
+var messageContainer, 
+    submitButton;
 
 // Init
 $(function() {
     messageContainer = $('#messageInput');
     submitButton = $("#submit");
-    bindButton();
+
+    // Schedule time formatter
     window.setInterval(formatTime, 1000);
 
     // Calculate size of chat entry window (removing top and bottom bars)
-    $("#chatEntries").height($(window).height() - 80);
+    resizeList()
+    $(window).resize(resizeList);
 
-    submitButton.click(function() {sendMessage();});
+    // Deal with the input stuff at the bottom of the screen
+    bindButton();
+    submitButton.click(function() {
+        sendMessage()
+    })
 
     $("input").bind("keydown", function(event) {
         // track enter key
@@ -36,28 +34,56 @@ $(function() {
     messageContainer.focus();
 });
 
-// Scroll to the bottom of the page
-function scrollToBottom() {
-    var body = $("body")[0];
-    body.scrollTop = body.scrollHeight;
+// Help functions
+function sendMessage() {
+    if (messageContainer.val() != "") {
+        addMessage(messageContainer.val())
+        messageContainer.val('')
+        submitButton.button('loading')
+    }
 }
 
+// Calculate bew height for the chatEntries div
+function resizeList() {
+    $("#chatEntries").height(
+        $(window).height() - $(".navbar-fixed-top").height() - $("#entries").height()
+    )
+}
+
+// Scroll to the bottom of the page
+// This is incorrect, as we need to avoid the height of the header
+// Also, we should not scroll unless we are already at the bottom.
+function scrollToBottom(force) {
+    var wst = $(window).scrollTop(),
+        wh  = $(window).height(),
+        dh = $(document).height()
+
+    console.log("[wst, wh, dh, sum]:[" + wst + "," + wh + "," + dh + "," + (wst+wh-dh) + "]")
+
+    // if the user is close to the bottom, scroll ahead
+    if (force || dh - wst - wh < 200) {
+        console.log("Scrolling")
+        var body = $("body")[0]
+        body.scrollTop = body.scrollHeight
+    }
+}
+   
 function bindButton() {
     submitButton.button('loading');
     messageContainer.on('input', function() {
         if (messageContainer.val() == "") {
-            submitButton.button('loading');
+            submitButton.button('loading')
         }
         else {
-            submitButton.button('reset');
+            submitButton.button('reset')
         }
-    });
+    })
 }
 
 // function to format the date in the "time" elements. 
 // Scheduled on an interval
 function formatTime(context) {
     $("time", context).each(function() {
-        $(this).text($.timeago($(this).attr('title')));
-    });
+        $(this).text($.timeago($(this).attr('title')))
+    })
 }
