@@ -57,8 +57,6 @@ function scrollToBottom(force) {
         wh  = $(window).height(),
         dh = $(document).height()
 
-    console.log("[wst, wh, dh, sum]:[" + wst + "," + wh + "," + dh + "," + (wst+wh-dh) + "]")
-
     // if the user is close to the bottom, scroll ahead
     if (force || dh - wst - wh < 75) {
         console.log("Scrolling")
