@@ -51,8 +51,7 @@ function resizeList() {
 }
 
 // Scroll to the bottom of the page
-// This is incorrect, as we need to avoid the height of the header
-// Also, we should not scroll unless we are already at the bottom.
+// On responsive font size, this can still break
 function scrollToBottom(force) {
     var wst = $(window).scrollTop(),
         wh  = $(window).height(),
@@ -61,7 +60,7 @@ function scrollToBottom(force) {
     console.log("[wst, wh, dh, sum]:[" + wst + "," + wh + "," + dh + "," + (wst+wh-dh) + "]")
 
     // if the user is close to the bottom, scroll ahead
-    if (force || dh - wst - wh < 200) {
+    if (force || dh - wst - wh < 75) {
         console.log("Scrolling")
         var body = $("body")[0]
         body.scrollTop = body.scrollHeight
