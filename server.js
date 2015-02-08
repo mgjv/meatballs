@@ -31,9 +31,10 @@ app.get('/', function(req, res){
 
 // Handle the socket.io connections
 
-var users = 0; //count the users
-var userno = 0; //for generating usernames
-var messages = [];
+var users = 0;          // count the users
+var userno = 0;         // for generating usernames
+var messages = [];      // holds all messages
+var messageVoters = []; // keep track of who voted. This is outside of messages, to avoid overhead when comminucating with clients
 
 io.sockets.on('connection', function (socket) { // First connection
     users += 1;
@@ -69,6 +70,7 @@ io.sockets.on('connection', function (socket) { // First connection
                 votes: 0
             };
             messages.push(message);
+            messageVoters.push([]);
             sendMessages();
             console.log("user " + message['pseudo'] + " said \"" + data + "\"");
         }
@@ -76,8 +78,16 @@ io.sockets.on('connection', function (socket) { // First connection
 
     socket.on('vote', function(messageNum) {
         var index = messageNum - 1;
-        messages[index].votes++;
-        sendMessages();
+        if (messageVoters[index].indexOf(socket.pseudo) == -1) {
+            console.log("user " + socket.pseudo + " voted on " + messageNum);
+            messages[index].votes++;
+            messageVoters[index].push(socket.pseudo);
+            sendMessages();
+        }
+        else {
+            console.log("user " + socket.pseudo + " tried to vote again on message " + messageNum); 
+            sendMessages(socket);
+        }
     });
 
     socket.on('disconnect', function () {
@@ -109,6 +119,8 @@ function assignPseudo(socket, pseudo) {
     }   
 }
 
+// TODO This needs to be more efficient
+// Also requires client side changes
 function sendMessages(socket) {
     if (socket) {
         socket.emit('all-messages', messages);
@@ -122,6 +134,3 @@ function sendMessages(socket) {
 function sendUserCount() {
     io.emit('nbUsers', users);
 }
-
-//exports.server = server;
-//exports.app = app;

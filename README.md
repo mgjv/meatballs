@@ -29,7 +29,6 @@ Enhancements: Paul Bennett, Kim Jackson, Guillaume Poulet, Martien Verbruggen
 
 In rough order of priority:
 
-- Limit voting to once per user
 - provide "most popular" list, based on votes
 - provide a 'shared token' type of access limitation
 - Don't scroll unless at the bottom of the list
