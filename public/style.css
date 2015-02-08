@@ -486,18 +486,18 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .nav-pills .dropdown-menu{-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
 .nav-tabs .dropdown-toggle .caret,.nav-pills .dropdown-toggle .caret{border-top-color:#0088cc;border-bottom-color:#0088cc;margin-top:6px;}
 .nav-tabs .dropdown-toggle:hover .caret,.nav-pills .dropdown-toggle:hover .caret{border-top-color:#005580;border-bottom-color:#005580;}
-.nav-tabs .active .dropdown-toggle .caret,.nav-pills .active .dropdown-toggle .caret{border-top-color:#333333;border-bottom-color:#333333;}
+.nav-tabs .activ
+.tab-content{display:table;width:100%;}
+.tabs-below .nav-tabs,.tabs-right .nav-tabs,.tabs-left .nav-tabs{border-bottom:0;}
+.tab-content>.tab-pane,.pill-content>.pill-pane{display:none;}
+.tab-content>.active,.pill-content>.active{display:block;}
+.tabs-below .nav-tabs{border-top:1px se .dropdown-toggle .caret,.nav-pills .active .dropdown-toggle .caret{border-top-color:#333333;border-bottom-color:#333333;}
 .nav>.dropdown.active>a:hover{color:#000000;cursor:pointer;}
 .nav-tabs .open .dropdown-toggle,.nav-pills .open .dropdown-toggle,.nav>.open.active>a:hover{color:#ffffff;background-color:#999999;border-color:#999999;}
 .nav .open .caret,.nav .open.active .caret,.nav .open a:hover .caret{border-top-color:#ffffff;border-bottom-color:#ffffff;opacity:1;filter:alpha(opacity=100);}
 .tabs-stacked .open>a:hover{border-color:#999999;}
 .tabbable{*zoom:1;}.tabbable:before,.tabbable:after{display:table;content:"";}
-.tabbable:after{clear:both;}
-.tab-content{display:table;width:100%;}
-.tabs-below .nav-tabs,.tabs-right .nav-tabs,.tabs-left .nav-tabs{border-bottom:0;}
-.tab-content>.tab-pane,.pill-content>.pill-pane{display:none;}
-.tab-content>.active,.pill-content>.active{display:block;}
-.tabs-below .nav-tabs{border-top:1px solid #ddd;}
+.tabbable:after{clear:both;}olid #ddd;}
 .tabs-below .nav-tabs>li{margin-top:-1px;margin-bottom:0;}
 .tabs-below .nav-tabs>li>a{-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}.tabs-below .nav-tabs>li>a:hover{border-bottom-color:transparent;border-top-color:#ddd;}
 .tabs-below .nav-tabs .active>a,.tabs-below .nav-tabs .active>a:hover{border-color:transparent #ddd #ddd #ddd;}
@@ -691,7 +691,6 @@ a.thumbnail:hover{border-color:#0088cc;-webkit-box-shadow:0 1px 4px rgba(0, 105,
 #main {
 	padding-top: 70px;
 }
-/*TODO: remove output*/
 #chatEntries {
     border: 1px solid grey;
     border-radius: 5px;
