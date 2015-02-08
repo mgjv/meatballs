@@ -119,7 +119,6 @@
 		background-image:none;
 	}
 
-
 	/* Chat */
 
 	#main {
@@ -188,6 +187,10 @@
 		float: left;
 		color: #000;
 		background: #FEE044;
+	}
+
+	.message:not(.self) .vote {
+		cursor: pointer;
 	}
 
 	.message .vote {

@@ -14,7 +14,7 @@ html
 		script#message-template(type="text/ractive")
 			include ./message-list.hbs
 		script(src="meatballs.js")
-		meta(name='viewport', content='width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi')
+		meta(name='viewport', content='width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0')
 	body
 		div.container#main
 			div.navbar.navbar-fixed-top
@@ -26,7 +26,7 @@ html
 						span.userCount
 							span.icon-user
 							span#nbUsers
-						span.userName You are
+						span.userName
 							span#userName
 			div#chatEntries
 			script
