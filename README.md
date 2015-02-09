@@ -37,5 +37,14 @@ In rough order of priority:
 - provide "most popular" list, based on votes
 - provide a 'shared token' type of access limitation
 - server-side persistence of chat
-- compression of socket messages
+- compression of socket messages, when sending the whole list
 - Support multiple chats at once
+
+### Changes
+
+2014-02-07 - mgjv
+
+- Refactored to use ractive
+- Added voting
+- Added persistence of pseudonym
+- Stop auto-scrolling when not at bottom

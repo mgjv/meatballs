@@ -51,7 +51,7 @@ io.sockets.on('connection', function (socket) { // First connection
     console.log("user " + socket.pseudo + " connected");
 
     // Send the current set of messages to the client
-    sendMessages(socket)
+    socket.emit('all-messages', messages);
 
     // Allow client to request a user name
     socket.on('wantPseudo', function(newPseudo) {
@@ -71,7 +71,12 @@ io.sockets.on('connection', function (socket) { // First connection
             };
             messages.push(message);
             messageVoters.push([]);
-            sendMessages();
+
+            // Send message to everyone else, and send a full update back to originator, 
+            // to ensure that any race conditions that they potentially ran into are resolved
+            socket.broadcast.emit('append-message', message)
+            socket.emit('all-messages', messages)
+
             console.log("user " + message['pseudo'] + " said \"" + data + "\"");
         }
     });
@@ -82,11 +87,11 @@ io.sockets.on('connection', function (socket) { // First connection
             console.log("user " + socket.pseudo + " voted on " + messageNum);
             messages[index].votes++;
             messageVoters[index].push(socket.pseudo);
-            sendMessages();
+            updateMessage(messages[index]);
         }
         else {
             console.log("user " + socket.pseudo + " tried to vote again on message " + messageNum); 
-            sendMessages(socket);
+            socket.emit('all-messages', messages);
         }
     });
 
@@ -119,15 +124,10 @@ function assignPseudo(socket, pseudo) {
     }   
 }
 
-// TODO This needs to be more efficient
-// Also requires client side changes
-function sendMessages(socket) {
-    if (socket) {
-        socket.emit('all-messages', messages);
-    } 
-    else {
-        io.emit('all-messages', messages);
-    }
+// Used to update a message in place on all clients
+function updateMessage(message) {
+    console.log("Updating message " + message.number)
+    io.emit('update-message', message);
 }
 
 // Send the count of the users to all clients
