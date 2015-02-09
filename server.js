@@ -134,3 +134,7 @@ function updateMessage(message) {
 function sendUserCount() {
     io.emit('nbUsers', users);
 }
+
+// This is here for the mocha tests
+exports.server = server;
+exports.app = app;

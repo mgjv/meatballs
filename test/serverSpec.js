@@ -1,7 +1,7 @@
 var mocha = require('mocha');
 var chai = require("chai");
-var expect = chai.expect();
-var should = chai.should();
+var expect = chai.expect;
+var should = chai.should;
 var io = require("socket.io-client");
 var request = require("supertest");
  
@@ -42,7 +42,7 @@ describe("server", function() {
     
             client.once("connect", function () {
                 client.once("echo", function (message) {
-                    message.should.equal("Hello World");
+                    expect(message).to.equal("Hello World");
 
                     client.disconnect();
                     done();
@@ -58,7 +58,7 @@ describe("server", function() {
             var client1 = io.connect(url, options);
             client1.once("connect", function() {
                 client1.once("nbUsers", function(nbUsers) {
-                    nbUsers.nb.should.equal("is 1");
+                    expect(nbUsers).to.equal(1);
 
                     client1.disconnect();
                     done();
@@ -72,10 +72,10 @@ describe("server", function() {
             client1.once("connect", function() {
                 client2.once("connect", function() {
                     client1.once("nbUsers", function(nbUsers) {
-                        nbUsers.nb.should.equal("are 2");
+                        expect(nbUsers).to.equal(2);
                     });
                     client2.once("nbUsers", function(nbUsers) {
-                        nbUsers.nb.should.equal("are 2");
+                        expect(nbUsers).to.equal(2);
                     });
 
                     client1.disconnect();
@@ -86,6 +86,7 @@ describe("server", function() {
         });
     });
 
+    // TODO This test does not seem to be able to fail
     describe("prevent duplicate name", function() {
         it("for 2 freds", function(done) {
             var client1 = io.connect(url, options);
@@ -93,8 +94,8 @@ describe("server", function() {
             client1.once("connect", function() {
                 client1.emit("setPseudo", "fred");
                 client2.once("connect", function() {
-                    client2.emit("setPseudo", "fred");
-                    client2.once("setPseudo", function() {
+                    client2.emit("wantPseudo", "fred");
+                    client2.once("wantPseudo", function() {
                         setPseudo.pseudoStatus.should.equal("error");
                     });
 
@@ -111,12 +112,12 @@ describe("server", function() {
             var client1 = io.connect(url, options);
             var client2 = io.connect(url, options);
             client1.once("connect", function() {
-                client1.emit("setPseudo", "john");
+                client1.emit("wantPseudo", "john");
                 client2.once("connect", function() {
-                    client2.emit("setPseudo", "gary");
-                    client2.once("message", function(message) {
-                        message.message.should.equal("hello");
-
+                    client2.emit("wantPseudo", "gary");
+                    client2.once("append-message", function(message) {
+                        expect(message.message).to.equal("hello");
+ 
                         client1.disconnect();
                         client2.disconnect();
                         done();
@@ -126,6 +127,7 @@ describe("server", function() {
             });
         });
 
+        // TODO This test probably shouldn't exist anymore
         it("does not send message when no name set", function(done) {
             // client1 (sender) will have no name in this test
             this.timeout(5000);
@@ -133,26 +135,17 @@ describe("server", function() {
             var client2 = io.connect(url, options);
             client1.once("connect", function() {
                 client2.emit("setPseudo", "will");
-                client2.once("message", function(message) {
+                client2.once("append-essage", function(message) {
                         true.should.equal(false);
 
                         client1.disconnect();
                         done();
                 });
                 client1.emit("message", "hello");
-                // we are firing the done callback having given the app 4.5s to return a value
-                setTimeout(done, 4500);
+                // we are firing the done callback having given the app 2.5s to return a value
+                setTimeout(done, 2500);
             });
         });
     });
 
-    describe("web interface", function() {
-        it("prompts for name entry", function(done) {
-            request(app)
-                .get("/")
-                .expect(200)
-                .expect(/class="modal fade"/)
-                .expect(/pseudoInput/, done);
-        });
-    });
-});
+ });
