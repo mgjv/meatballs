@@ -58,7 +58,7 @@ function scrollToBottom(force) {
         dh = $(document).height()
 
     // if the user is close to the bottom, scroll ahead
-    if (force || dh - wst - wh < 75) {
+    if (force || dh - wst - wh < 100) {
         var body = $("body")[0]
         body.scrollTop = body.scrollHeight
     }
