@@ -57,15 +57,12 @@ socket.on('pseudoStatus', function(data){
         }
         else if (pseudo != oldPseudo) {
             // This can only happen the first time around
-            console.log("Retry user name, got " + pseudo + ", want " + oldPseudo + ", try " + pseudoTries)
-            // We didn't get the name we want to have, let's ask for it again.
             socket.emit('wantPseudo', oldPseudo)
         }
     }
     else {
         console.log('server error getting pseudo')
-        if (pseudoTries-- > 0) {
-            console.log("Retry user name, have " + pseudo + ", want " + oldPseudo + ", try " + pseudoTries)
+        if (oldPseudo && pseudoTries-- > 0) {
             // We didn't get the name we want to have, let's ask for it again.
             socket.emit('wantPseudo', oldPseudo)         
         }
