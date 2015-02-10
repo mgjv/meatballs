@@ -1,23 +1,23 @@
-/* jshint asi: true */
+/* jshint mocha:true, node:true */
 
-var mocha = require('mocha')
+require("mocha")
 var chai = require("chai")
 var expect = chai.expect
-var should = chai.should()
+chai.should()
+
 var io = require("socket.io-client")
-var request = require("supertest")
- 
+
 describe("server/client", function() {
 
     var server
     // Randomly pick a port. Theoretically this could conflict, but unlikely
-    process.env.PORT = Math.floor((Math.random() * 100) + 31000)
+    process.env.PORT = Math.floor(Math.random() * 100 + 31000)
     var app = require("../server.js").app
-    var url = "http://localhost:" + app.get('port')
+    var url = "http://localhost:" + app.get("port")
     console.log("Using URL: " + url)
     var options ={
-            transports: ['websocket'],
-            'force new connection': true
+            transports: ["websocket"],
+            "force new connection": true
         }
 
     before(function (done) {

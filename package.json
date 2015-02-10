@@ -15,5 +15,14 @@
   },
   "scripts": {
     "start": "node server.js"
+  },
+  "jshintConfig": {
+    "asi": true,
+    "immed": true,
+    "latedef": "nofunc",
+    "newcap": true,
+    "quotmark": true,
+    "undef": true,
+    "unused": true
   }
 }

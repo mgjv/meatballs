@@ -9,9 +9,6 @@ html
 		script(src='http://cdn.ractivejs.org/latest/ractive.min.js')
 		script(src="/socket.io/socket.io.js")
 		script(src="script.js")
-		script#message-template(type="text/ractive")
-			include ./message-list.hbs
-		script(src="meatballs.js")
 		meta(name='viewport', content='width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0')
 	body
 		div.container#main
@@ -27,8 +24,9 @@ html
 						span.userName
 							span#userName
 			div#chatEntries
-			script
-				include ../message-handler.js
+			script#message-template(type="text/ractive")
+				include ./message-list.hbs
+			script(src="meatballs.js")
 			div.row#entries
 				input(type='text', placeholder='Type message here')#messageInput
 				button.btn#submit(data-loading-text="Send") Send
