@@ -13,7 +13,7 @@ var pseudoArray = ['admin']; //block the admin username (you can disable it)
 
 // Views Options
 app.set('view engine', 'jade');
-app.set("view options", { layout: false })
+app.set("view options", { layout: false });
 
 app.use(express.static(__dirname + '/public'));
 
@@ -73,8 +73,8 @@ io.sockets.on('connection', function (socket) { // First connection
 
             // Send message to everyone else, and send a full update back to originator, 
             // to ensure that any race conditions that they potentially ran into are resolved
-            socket.broadcast.emit('append-message', message)
-            socket.emit('all-messages', messages)
+            socket.broadcast.emit('append-message', message);
+            socket.emit('all-messages', messages);
 
             console.log("message: " + socket.pseudo + " said \"" + data + "\"");
         }
@@ -111,7 +111,7 @@ function assignPseudo(socket, pseudo) {
      // Test if the name is already taken
     if (pseudoArray.indexOf(pseudo) == -1) {
         if (socket.pseudo) {
-            console.log("rename: " + socket.pseudo + " to " + pseudo)
+            console.log("rename: " + socket.pseudo + " to " + pseudo);
         } 
         socket.pseudo = pseudo;
         pseudoArray.push(pseudo);
@@ -119,7 +119,7 @@ function assignPseudo(socket, pseudo) {
     } 
     else {
         console.log("rename refused:" + socket.pseudo + " to " + pseudo);
-        socket.emit('pseudo-status', {'status': 'error'}) // Send the error
+        socket.emit('pseudo-status', {'status': 'error'}); // Send the error
     }   
 }
 

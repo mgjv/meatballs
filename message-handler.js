@@ -1,3 +1,4 @@
+/* jshint asi: true */
 
 var pseudo
 
@@ -18,7 +19,7 @@ ractive.on ('vote', function(event, messageNum) {
 })
 
 // Socket.io
-var socket = io.connect();
+var socket = io.connect()
 
 socket.on('connect', function() {
     // console.log('connected to chat server')
@@ -28,14 +29,14 @@ socket.on('user-num', function(count) {
     $('#user-num').html(count)
 })
 
-// This is an in-place message update, because of votes, for example
+// An in-place message update, because of votes, for example
 socket.on('update-message', function(message) {
     // console.log("received update for message " + message.number)
     ractive.get('messages')[message.number - 1] = fixMessageOwner(message)
     ractive.update('messages')
 })
 
-// This ia always someone else's message being added to our queue
+// Someone else's message coming in
 socket.on('append-message', function(message) {
     // console.log("Received message " + message.number)
     ractive.get('messages').push(message)

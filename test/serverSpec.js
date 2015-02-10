@@ -1,3 +1,5 @@
+/* jshint asi: true */
+
 var mocha = require('mocha')
 var chai = require("chai")
 var expect = chai.expect
