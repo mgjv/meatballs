@@ -19,7 +19,6 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || defaultPort);
 
-io.set('log level', 1);
 server.listen(app.get('port'), function () {
     console.log("Server listening on port %d", app.get('port'));
 });
@@ -48,13 +47,13 @@ io.sockets.on('connection', function (socket) { // First connection
 
     // Automatically assign a name to the user
     assignPseudo(socket, 'User #' + userno);
-    console.log("user " + socket.pseudo + " connected");
+    console.log("connect: " + socket.pseudo + " (" + users + ")");
 
     // Send the current set of messages to the client
     socket.emit('all-messages', messages);
 
     // Allow client to request a user name
-    socket.on('wantPseudo', function(newPseudo) {
+    socket.on('request-pseudo', function(newPseudo) {
         assignPseudo(socket, newPseudo);
     });
 
@@ -77,14 +76,14 @@ io.sockets.on('connection', function (socket) { // First connection
             socket.broadcast.emit('append-message', message)
             socket.emit('all-messages', messages)
 
-            console.log("user " + message['pseudo'] + " said \"" + data + "\"");
+            console.log("message: " + socket.pseudo + " said \"" + data + "\"");
         }
     });
 
     socket.on('vote', function(messageNum) {
         var index = messageNum - 1;
         if (messageVoters[index].indexOf(socket.pseudo) == -1) {
-            console.log("user " + socket.pseudo + " voted on " + messageNum);
+            console.log("vote: " + socket.pseudo + " for message " + messageNum);
             messages[index].votes++;
             messageVoters[index].push(socket.pseudo);
             updateMessage(messages[index]);
@@ -102,7 +101,7 @@ io.sockets.on('connection', function (socket) { // First connection
         if (pseudo) {
             var index = pseudoArray.indexOf(pseudo);
             pseudoArray.splice(index, 1);
-            console.log("user " + pseudo + " disconnected");
+            console.log("disconnect: " + pseudo + " (" + users + ")");
         }
     });
 });
@@ -112,27 +111,27 @@ function assignPseudo(socket, pseudo) {
      // Test if the name is already taken
     if (pseudoArray.indexOf(pseudo) == -1) {
         if (socket.pseudo) {
-            console.log("user " + socket.pseudo + " renamed to " + pseudo)
+            console.log("rename: " + socket.pseudo + " to " + pseudo)
         } 
         socket.pseudo = pseudo;
         pseudoArray.push(pseudo);
-        socket.emit('pseudoStatus', {'status': 'ok', 'pseudo': pseudo});
+        socket.emit('pseudo-status', {'status': 'ok', 'pseudo': pseudo});
     } 
     else {
-        console.log("user name " + pseudo + " is already taken");
-        socket.emit('pseudoStatus', {'status': 'error'}) // Send the error
+        console.log("rename refused:" + socket.pseudo + " to " + pseudo);
+        socket.emit('pseudo-status', {'status': 'error'}) // Send the error
     }   
 }
 
 // Used to update a message in place on all clients
 function updateMessage(message) {
-    console.log("Updating message " + message.number)
+    // console.log("update message: " + message.number)
     io.emit('update-message', message);
 }
 
 // Send the count of the users to all clients
 function sendUserCount() {
-    io.emit('nbUsers', users);
+    io.emit('user-num', users);
 }
 
 // This is here for the mocha tests

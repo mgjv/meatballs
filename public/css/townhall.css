@@ -84,7 +84,7 @@
 		position: relative;
 	}
 
-	.navbar .userCount #nbUsers {
+	.navbar .userCount #user-num {
 		margin-left:.3rem;
 	}
 

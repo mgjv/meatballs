@@ -24,8 +24,8 @@ socket.on('connect', function() {
     // console.log('connected to chat server')
  })
 
-socket.on('nbUsers', function(count) {
-    $('#nbUsers').html(count)
+socket.on('user-num', function(count) {
+    $('#user-num').html(count)
 })
 
 // This is an in-place message update, because of votes, for example
@@ -54,7 +54,7 @@ socket.on('all-messages', function(messages) {
 // to us.
 // TODO: this is more complex than it should be
 var pseudoTries = 3
-socket.on('pseudoStatus', function(data){
+socket.on('pseudo-status', function(data){
 
     var oldPseudo = $.cookie('pseudo')
 
@@ -70,14 +70,14 @@ socket.on('pseudoStatus', function(data){
         }
         else if (pseudo != oldPseudo) {
             // This can only happen the first time around
-            socket.emit('wantPseudo', oldPseudo)
+            socket.emit('request-pseudo', oldPseudo)
         }
     }
     else {
         console.log('server error getting pseudo')
         if (oldPseudo && pseudoTries-- > 0) {
             // We didn't get the name we want to have, let's ask for it again.
-            socket.emit('wantPseudo', oldPseudo)         
+            socket.emit('request-pseudo', oldPseudo)         
         }
     }
 })
