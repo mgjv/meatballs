@@ -10,6 +10,9 @@ var http = require("http");
 var server = http.createServer(app);
 var io = require("socket.io").listen(server);
 
+var fs = require("fs")
+var fileName = "server.json"
+
 //var jade = require("jade");
 var pseudoArray = ["admin"]; //block the admin username (you can disable it)
 
@@ -36,6 +39,8 @@ var users = 0;          // count the users
 var userno = 0;         // for generating usernames
 var messages = [];      // holds all messages
 var messageVoters = []; // keep track of who voted. This is outside of messages, to avoid overhead when comminucating with clients
+
+readData()
 
 io.sockets.on("connection", function (socket) { // First connection
     users += 1;
@@ -79,6 +84,7 @@ io.sockets.on("connection", function (socket) { // First connection
             socket.emit("all-messages", messages);
 
             console.log("message: " + socket.pseudo + " said \"" + data + "\"");
+            saveData();
         }
     });
 
@@ -89,6 +95,7 @@ io.sockets.on("connection", function (socket) { // First connection
             messages[index].votes++;
             messageVoters[index].push(socket.pseudo);
             updateMessage(messages[index]);
+            saveData();
         }
         else {
             console.log("user " + socket.pseudo + " tried to vote again on message " + messageNum); 
@@ -134,6 +141,34 @@ function updateMessage(message) {
 // Send the count of the users to all clients
 function sendUserCount() {
     io.emit("user-num", users);
+}
+
+// Simplistic Persistence
+// This probably needs more sophistication and/or robustness
+function saveData() {
+    var data = JSON.stringify({
+        messages: messages,
+        voters: messageVoters
+    });
+    fs.writeFile(fileName, data, function(err) {
+        if (err) {
+            console.log("save: Error trying to persist")
+        }
+        console.log("save: done")
+    })
+}
+
+function readData() {
+    try {
+        var data = JSON.parse(fs.readFileSync(fileName))
+        console.log("read: got data")
+        messages = data.messages
+        messageVoters = data.voters
+    }
+    catch (e) {
+        console.log("read: Nothing there")
+        messages = []
+    }
 }
 
 // This is here for the mocha tests

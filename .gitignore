@@ -3,6 +3,9 @@ lib-cov/*
 coverage/*
 .*.sw[po]
 
+npm-debug.log
+server.json
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

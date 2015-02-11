@@ -38,7 +38,6 @@ In rough order of priority:
 
 - provide "most popular" list, based on votes
 - provide a 'shared token' type of access limitation
-- server-side persistence of chat
 - compression of socket messages, when sending the whole list
 - Support multiple chats at once
 

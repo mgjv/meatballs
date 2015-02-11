@@ -61,6 +61,7 @@ function scrollToBottom(force) {
         dh = $(document).height()
 
     // if the user is close to the bottom, scroll ahead
+    // console.log("dh - wst - wh = ", dh, " - ", wst, " - ", wh, " = ", dh - wst - wh)
     if (force || dh - wst - wh < 100) {
         var body = $("body")[0]
         body.scrollTop = body.scrollHeight
@@ -128,6 +129,7 @@ socket.on("update-message", function(message) {
 socket.on("append-message", function(message) {
     // console.log("Received message " + message.number)
     ractive.get("messages").push(message)
+    scrollToBottom()
 })
 
 socket.on("all-messages", function(messages) {
