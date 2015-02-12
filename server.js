@@ -54,7 +54,7 @@ io.sockets.on("connection", function (socket) { // First connection
 
     // Automatically assign a name to the user
     assignPseudo(socket, "User #" + userno);
-    console.log("connect: " + socket.pseudo + " (" + users + ")");
+    console.log("connect:", socket.pseudo, "(" + users + ")");
 
     // Send the current set of messages to the client
     socket.emit("all-messages", messages);
@@ -83,7 +83,7 @@ io.sockets.on("connection", function (socket) { // First connection
             socket.broadcast.emit("append-message", message);
             socket.emit("all-messages", messages);
 
-            console.log("message: " + socket.pseudo + " said \"" + data + "\"");
+            console.log("message:", socket.pseudo, "said \"" + data + "\"");
             saveData();
         }
     });
@@ -91,14 +91,14 @@ io.sockets.on("connection", function (socket) { // First connection
     socket.on("vote", function(messageNum) {
         var index = messageNum - 1;
         if (messageVoters[index].indexOf(socket.pseudo) == -1) {
-            console.log("vote: " + socket.pseudo + " for message " + messageNum);
+            console.log("vote:", socket.pseudo + "for message" + messageNum);
             messages[index].votes++;
             messageVoters[index].push(socket.pseudo);
             updateMessage(messages[index]);
             saveData();
         }
         else {
-            console.log("user " + socket.pseudo + " tried to vote again on message " + messageNum); 
+            console.log("vote:", socket.pseudo, "tried to vote again for" + messageNum); 
             socket.emit("all-messages", messages);
         }
     });
@@ -110,7 +110,7 @@ io.sockets.on("connection", function (socket) { // First connection
         if (pseudo) {
             var index = pseudoArray.indexOf(pseudo);
             pseudoArray.splice(index, 1);
-            console.log("disconnect: " + pseudo + " (" + users + ")");
+            console.log("disconnect:", pseudo, "(" + users + ")");
         }
     });
 });
@@ -120,14 +120,14 @@ function assignPseudo(socket, pseudo) {
      // Test if the name is already taken
     if (pseudoArray.indexOf(pseudo) == -1) {
         if (socket.pseudo) {
-            console.log("rename: " + socket.pseudo + " to " + pseudo);
+            console.log("rename:", socket.pseudo, "to", pseudo);
         } 
         socket.pseudo = pseudo;
         pseudoArray.push(pseudo);
         socket.emit("pseudo-status", {"status": "ok", "pseudo": pseudo});
     } 
     else {
-        console.log("rename refused:" + socket.pseudo + " to " + pseudo);
+        console.log("rename refused:", socket.pseudo, "to", pseudo);
         socket.emit("pseudo-status", {"status": "error"}); // Send the error
     }   
 }
@@ -161,9 +161,9 @@ function saveData() {
 function readData() {
     try {
         var data = JSON.parse(fs.readFileSync(fileName))
-        console.log("read: got data")
         messages = data.messages
         messageVoters = data.voters
+        console.log("read:", messages.length, "messages")
     }
     catch (e) {
         console.log("read: Nothing there")

@@ -90,6 +90,7 @@ function formatTime(context) {
 
 // From here it"s data model maintenance and ractive
 var pseudo
+var socket = io.connect()
 
 var ractive = new Ractive({
     el: "#chatEntries",
@@ -108,7 +109,6 @@ ractive.on ("vote", function(event, messageNum) {
 })
 
 // Socket.io
-var socket = io.connect()
 
 socket.on("connect", function() {
     // console.log("connected to chat server")
@@ -134,9 +134,11 @@ socket.on("append-message", function(message) {
 
 socket.on("all-messages", function(messages) {
     // console.log("Received message update: " + messages.length)
+    // If there were no messages yet, ensure to scroll to the bottom
+    var forceScroll = ractive.get("messages").length ? false : true
     messages.forEach(fixMessageOwner)
     ractive.set("messages", messages)
-    scrollToBottom()
+    scrollToBottom(forceScroll)
 })
 
 // On connection, the server will assign a pseudonym, or user name.
