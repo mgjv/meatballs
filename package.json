@@ -5,13 +5,16 @@
   "dependencies": {
     "socket.io": "*",
     "express": "*",
-    "jade": "*"
+    "jade": "*",
+    "promise": "*",
+    "winston": "*"
   },
   "devDependencies": {
     "mocha": "*",
     "chai": "*",
     "supertest": "*",
-    "socket.io-client": "*"
+    "socket.io-client": "*",
+    "jscoverage": "*"
   },
   "scripts": {
     "start": "node server.js"

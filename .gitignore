@@ -1,6 +1,7 @@
 node_modules
 lib-cov/*
 coverage/*
+covreporter/*
 .*.sw[po]
 
 npm-debug.log
