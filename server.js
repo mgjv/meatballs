@@ -12,13 +12,11 @@ var io = require("socket.io").listen(server)
 
 var DB = require("./message-db").DBfs
 
-var winston = require("winston")
-var logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: "message-server.log" })
-    ]
-})
+// Set log transports globally in application
+// TODO: work on making this better. Maybe use a Container?
+var logger = require("winston")
+logger.remove(logger.transports.Console)
+logger.add(logger.transports.File, { filename: "message-server.log" })
 
 // The database with our messages
 var pseudos = ["admin"] // block the admin username
@@ -45,8 +43,6 @@ var userno = 0         // for generating usernames
 
 // This should not be hardcoded. Makes testing hard
 var db = new DB()
-db.setLogger(logger)
-// db._read() // TODO this needs to be moved inside DB
 
 io.sockets.on("connection", function (socket) { // First connection
     users += 1

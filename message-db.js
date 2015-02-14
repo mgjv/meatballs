@@ -10,17 +10,14 @@
 /* jshint node:true */
 
 var fs = require("fs")
-var winston = require("winston")
+var logger = require("winston") // For now we just use the default logger
 
 // var Promise = require("promise")
 
 // No persistence version
 // TODO This should create and use promises
-var DB = function(name) {
+var DB = exports.DB = function(name) {
     this.name = name || "message-db"
-    this.logger = new (winston.Logger)({ 
-        transports: [ new (winston.transports.Console)() ] 
-    })
     this.__init_store()
  
 }
@@ -29,9 +26,6 @@ DB.prototype.__init_store = function() {
         messages: [],
         voters: []
     }
-}
-DB.prototype.setLogger = function(logger) {
-    this.logger = logger
 }
 DB.prototype.addMessage = function(who, msg) {
      var message = {
@@ -76,7 +70,7 @@ DB.prototype._delete = function () {
 
 // File system backed message store
 // TODO This probably needs more sophistication and/or robustness
-var DBfs = function(name) {
+var DBfs = exports.DBfs = function(name) {
     DB.call(this, name)
     this.fileName = this.name +  ".json"
     this._read()
@@ -86,7 +80,6 @@ DBfs.prototype.constructor = DBfs
 DBfs.prototype._save = function() {
     var data = JSON.stringify(this._store)
     // Can't refer to 'this' in the callback for writeFile
-    var logger = this.logger
     var name = this.name
     fs.writeFile(this.fileName, data, function(err) {
         if (err) {
@@ -103,16 +96,19 @@ DBfs.prototype._read = function() {
         var data = JSON.parse(fs.readFileSync(this.fileName))
         this._store.messages = data.messages
         this._store.voters = data.voters
-        this.logger.info("DB(%s) read: %d messages", this.name, data.messages.length)
+        logger.info("DB(%s) read: %d messages", this.name, data.messages.length)
     }
     catch (e) {
-        this.logger.info("DB(%s) read: No database", this.name)
+        logger.info("DB(%s) read: No database", this.name)
     }
 }
 DBfs.prototype._delete = function() {
     DB.prototype._delete.call(this)
-    fs.unlink(this.fileName)
+    var name = this.name
+    fs.unlink(this.fileName, function(err) {
+        if (err) {
+            // While this is weird, we should just ignore it
+            logger.info("DB(%s) delete: Database file deleted", name)
+        }
+    })
 }
-
-module.exports.DB = DB
-module.exports.DBfs = DBfs

@@ -2,7 +2,7 @@ Node.js Chat
 ===
 
 This application is made with Node.js, Express, Socket.io, Jade, Ractive and others.
-It use Bootstrap from Twitter and the javascript library SlimScroll.
+It uses Bootstrap from Twitter and the javascript library SlimScroll.
 Thanks to Node.js, the chat can handle a lot of simultaneous connections without lag.
 
 This chat application has been seriously reworked to be a commenting tool for 
@@ -42,6 +42,11 @@ In rough order of priority:
 - Support multiple chats at once
 
 ### Changes
+
+2014-02-14 - mgjv
+
+- Factored out message db handling into separate module, preparing to support multiple chats
+- More testing and coverage reporting
 
 2014-02-07 - mgjv
 

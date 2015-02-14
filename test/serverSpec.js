@@ -14,7 +14,7 @@ describe("server/client", function() {
     process.env.PORT = Math.floor(Math.random() * 100 + 31000)
     var app = require("../server.js").app
     var url = "http://localhost:" + app.get("port")
-    console.log("Using URL: " + url)
+    // console.log("Using URL: " + url)
     var options ={
             transports: ["websocket"],
             "force new connection": true
@@ -153,9 +153,36 @@ describe("server/client", function() {
             client1.once("connect", function() {
                 client2.once("connect", function() {
                     client2.once("append-message", function(message) {
+                        // Client2 receives no notification when things go right
+                        client1.once("update-message", function(message) {
+                            message.number.should.equal(msgNum)
+                            message.votes.should.equal(1)
+                            client1.disconnect()
+                            client2.disconnect()
+                            done()
+                        })
                         var msgNum = message.number
                         message.votes.should.equal(0)
                         client2.emit("vote", msgNum)
+                    })
+                    client1.emit("message", "hello")
+                })
+            })
+        })
+        it("cannot vote twice on a message", function(done) {
+            var client1 = io.connect(url, options)
+            var client2 = io.connect(url, options)
+            client1.once("connect", function() {
+                client2.once("connect", function() {
+                    client2.once("append-message", function(message) {
+                        // This should come back for the first vote
+                        // This theoretically has a race condition, as this 
+                        // could happen after the client2 notification.
+                        client1.once("update-message", function(message) {
+                            message.number.should.equal(msgNum)
+                            message.votes.should.equal(1)
+                        })
+                        // This should come back for the second vote
                         client2.once("update-message", function(message) {
                             message.number.should.equal(msgNum)
                             message.votes.should.equal(1)
@@ -163,6 +190,10 @@ describe("server/client", function() {
                             client2.disconnect()
                             done()
                         })
+                        var msgNum = message.number
+                        message.votes.should.equal(0)
+                        client2.emit("vote", msgNum)
+                        client2.emit("vote", msgNum)
                     })
                     client1.emit("message", "hello")
                 })
