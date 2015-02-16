@@ -1,5 +1,9 @@
 /* jshint mocha:true, node:true */
 
+// TODO:
+//  The test should not use the standard database, 
+//  but one for the test specifically
+
 require("mocha")
 var chai = require("chai")
 var expect = chai.expect

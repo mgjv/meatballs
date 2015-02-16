@@ -14,7 +14,10 @@
     "chai": "*",
     "supertest": "*",
     "socket.io-client": "*",
-    "jscoverage": "*"
+    "grunt": "*",
+    "istanbul": "*",
+    "grunt-mocha-test": "*",
+    "grunt-mocha-istanbul": "*"
   },
   "scripts": {
     "start": "node server.js"
