@@ -269,68 +269,68 @@ h3 {
 
 @media (min-width: 768px) {
 
-.message-number {
-    font-size: 28px;
-}
+	.message-number {
+	    font-size: 28px;
+	}
 
-.message p {
-    font-size: 22px;
-    line-height: 22px;
-    padding: 0 0 0 3.5rem;
-}
+	.message p {
+	    font-size: 22px;
+	    line-height: 22px;
+	    padding: 0 0 0 3.5rem;
+	}
 
-.message.self p {
-    padding: 0 3.5rem 0 0;
-}
+	.message.self p {
+	    padding: 0 3.5rem 0 0;
+	}
 
 
-.message p.infos {
-    font-size: 16px;
-    line-height: 16px;
-}
+	.message p.infos {
+	    font-size: 16px;
+	    line-height: 16px;
+	}
 
-#entries {
-	height: 40px;
-}
+	#entries {
+		height: 40px;
+	}
 
-#entries #messageInput {
-	height: 30px;
-}
+	#entries #messageInput {
+		height: 30px;
+	}
 
 }
 
 @media (max-width: 768px) {
 
-#main {
-	padding-bottom: 80px;
-}
+	#main {
+		padding-bottom: 80px;
+	}
 
-.message-number, .message.self .message-number {
-    font-size: 18px;
-    padding-top: 1rem;
-}
+	.message-number, .message.self .message-number {
+	    font-size: 18px;
+	    padding-top: 1rem;
+	}
 
-.message p {
-    font-size: 16px;
-    line-height: 16px;
-    padding: 0 0 0 2.5rem;
-}
+	.message p {
+	    font-size: 16px;
+	    line-height: 16px;
+	    padding: 0 0 0 2.5rem;
+	}
 
-.message.self p {
-    padding: 0 2.5rem 0 0;
-}
+	.message.self p {
+	    padding: 0 2.5rem 0 0;
+	}
 
-.message p.infos {
-    font-size: 14px;
-    line-height: 14px;
-}
+	.message p.infos {
+	    font-size: 14px;
+	    line-height: 14px;
+	}
 
-#entries {
-	height: 80px;
-}
+	#entries {
+		height: 80px;
+	}
 
-#entries #messageInput {
-	height:70px;
-}
+	#entries #messageInput {
+		height:70px;
+	}
 
 }
