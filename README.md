@@ -1,16 +1,20 @@
 Node.js Chat
 ===
 
-This application is made with Node.js, Express, Socket.io, Jade, Ractive and others.
-It uses Bootstrap from Twitter and the javascript library SlimScroll.
+This application is made with Node.js, Express, Socket.io, Jade, Ractive, Bootstrap 
+and others.
 Thanks to Node.js, the chat can handle a lot of simultaneous connections without lag.
 
 This chat application has been seriously reworked to be a commenting tool for 
-presentations. It allows anonymous users to comment or askquestions, and to vote on each others comments and questions. The presentor can use that feedback to adjust the presentation, or to use it for a Q&A session at the end.
+presentations. It allows anonymous users to comment or ask questions, and to vote on 
+each others comments and questions. The presenter can use that feedback to adjust the
+presentation, or to use it for a Q&A session at the end.
 
-The design goals were to encourage anonymous feedback, which meant we did not want a log in or user name procedure. This application tries to deal with the challenges of making that anonymity "sticky", 
-i.e. keep the same user name associated with the same client. It does not attempt to be completely 
-secure, as that is pretty much stupid.
+The design goals were to encourage anonymous feedback, which meant we did not want a log in 
+or user name procedure. This application tries to deal with the challenges of making 
+that anonymity "sticky", i.e. keep the same user name associated with the same client. It 
+does not attempt to be completely secure or to guess a user's identity, as that is pretty 
+much counter-productive and stupid.
 
 ## Install modules :
 
