@@ -1,5 +1,2 @@
--r jscoverage
 --reporter spec
---ui bdd
 --timeout 1000
---covout html

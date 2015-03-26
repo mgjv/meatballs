@@ -13,11 +13,8 @@ var testStores = [
 	{ name: "File system store", db: new DBfs("tempStore") },
 ]
 
-
 // TODO tests for 
-// 	setting logger
 //  error when saving? needs mock?
-//  reading from an existing store
 testStores.forEach(function(store) {
 	describe(store.name, function () {
 		var db = store.db

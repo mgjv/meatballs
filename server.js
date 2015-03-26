@@ -1,3 +1,4 @@
+/* @flow */
 /* jshint node:true */
 
 // Customization
@@ -6,8 +7,8 @@ var defaultPort = 8080
 // Libraries
 var express = require("express"), 
     app = express()
-var http = require("http")
-var server = http.createServer(app)
+var http = require("http"),
+    server = http.createServer(app)
 var io = require("socket.io").listen(server)
 
 var DB = require("./message-db").DBfs
@@ -36,12 +37,12 @@ app.get("/", function(req, res){
     res.render("home.jade")
 })
 
-// Handle the socket.io connections
+// Application logic below here
 
 var users = 0          // count the users
 var userno = 0         // for generating usernames
 
-// This should not be hardcoded. Makes testing hard
+// TODO: This should not be hardcoded. Makes testing hard
 var db = new DB()
 
 io.sockets.on("connection", function (socket) { // First connection
