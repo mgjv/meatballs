@@ -1,7 +1,11 @@
 {
   "name":"chat",
-  "node":"0.6.12",
-  "author":"geekuillaume",
+  "node":"*",
+  "author":"mgjv",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mgjv/meatballs.git"
+  },
   "dependencies": {
     "socket.io": "*",
     "express": "*",
@@ -16,11 +20,13 @@
     "socket.io-client": "*",
     "grunt": "*",
     "istanbul": "*",
+    "grunt": "*",
     "grunt-mocha-test": "*",
     "grunt-mocha-istanbul": "*"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "grunt test"
   },
   "jshintConfig": {
     "asi": true,
